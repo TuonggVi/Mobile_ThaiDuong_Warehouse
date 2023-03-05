@@ -23,7 +23,7 @@ class GoodsIssueEntryModel extends GoodsIssueEntry {
       super.item, super.requestSublotSize, super.requestQuantity, super.lots);
   factory GoodsIssueEntryModel.fromJson(Map<String, dynamic> json) {
     return GoodsIssueEntryModel(
-      json['item']== null ? null as ItemModel : ItemModel.fromJson(json["item"]),
+      json['item'] = ItemModel.fromJson(json["item"]),
       json['requestSublotSize'],
       json['requestQuantity'],
       json['lots'] == null

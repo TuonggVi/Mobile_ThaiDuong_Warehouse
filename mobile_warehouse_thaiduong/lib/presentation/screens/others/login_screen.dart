@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse_thaiduong/constant.dart';
 import 'package:mobile_warehouse_thaiduong/function.dart';
+import 'package:mobile_warehouse_thaiduong/presentation/bloc/blocs/login_bloc.dart';
+import 'package:mobile_warehouse_thaiduong/presentation/bloc/events/login_events.dart';
+import 'package:mobile_warehouse_thaiduong/presentation/bloc/states/login_states.dart';
 import 'package:mobile_warehouse_thaiduong/presentation/screens/others/main_screen.dart';
 import 'package:mobile_warehouse_thaiduong/presentation/widgets/button_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController userController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  final bool _showPass = true;
-  final bool _isUsernameErr = false;
-  final bool _isPasswordErr = false;
+  bool _showPass = false;
+  bool _isUsernameErr = false;
+  bool _isPasswordErr = false;
 
   LoginScreen({super.key});
   @override
@@ -40,81 +44,103 @@ class LoginScreen extends StatelessWidget {
             ),
           ],
         ),
-       // endDrawer: DrawerUser(),
+        // endDrawer: DrawerUser(),
         body: SingleChildScrollView(
             child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 SizedBox(
                   height: 40 * SizeConfig.ratioHeight,
                 ),
-                      
-               
-                SizedBox(
-                  width: 300 * SizeConfig.ratioWidth,
-                  child: TextField(
-                    controller: userController,
-                    maxLength: 20,
-                    style: TextStyle(
-                        fontSize: 25 * SizeConfig.ratioFont, color: Colors.black),
-                    decoration: InputDecoration(
-                        labelText: "Tên đăng nhập",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 20 * SizeConfig.ratioFont,
-                        ),
-                        errorText: _isUsernameErr
-                            ? "Tên đăng nhập phải dài hơn " "${Constants.minLengthUserName} ký tự"
-                            : null,
-                        errorStyle: TextStyle(
-                            color: Colors.red,
-                            fontSize: 15 * SizeConfig.ratioFont)),
-                    onChanged: (text) {
-                    
-                    },
-                  ),
+                BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: 300 * SizeConfig.ratioWidth,
+                      child: TextField(
+                        controller: userController,
+                        maxLength: 20,
+                        style: TextStyle(
+                            fontSize: 25 * SizeConfig.ratioFont,
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                            labelText: "Tên đăng nhập",
+                            labelStyle: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 20 * SizeConfig.ratioFont,
+                            ),
+                            errorText: _isUsernameErr
+                                ? "Tên đăng nhập phải dài hơn "
+                                    "${Constants.minLengthUserName} ký tự"
+                                : null,
+                            errorStyle: TextStyle(
+                                color: Colors.red,
+                                fontSize: 15 * SizeConfig.ratioFont)),
+                        onChanged: (text) {},
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: 5 * SizeConfig.ratioHeight),
-                SizedBox(
-                  width: 300 * SizeConfig.ratioWidth,
-                  child:
-                      Stack(alignment: AlignmentDirectional.centerEnd, children: [
-                    TextField(
-                      obscureText: _showPass,
-                      controller: passController,
-                      maxLength: 20,
-                      style: TextStyle(
-                          fontSize: 25 * SizeConfig.ratioFont,
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                          fillColor: Colors.red,
-                          labelText: "Mật khẩu",
-                          labelStyle: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 20 * SizeConfig.ratioFont,
-                          ),
-                          errorText: _isPasswordErr
-                              ? "Mật khẩu phải dài hơn " "${Constants.minLengthPassWord} ký tự"
-                              : null,
-                          errorStyle: TextStyle(
-                              color: Colors.red,
-                              fontSize: 15 * SizeConfig.ratioFont)),
-                      onChanged: (_) {
-                        //Yêu cầu Bloc check dữ liệu username và password
-                     
-                      },
-                    ),
-                    IconButton(
-                        onPressed: () {
-                         
-                        },
-                        icon: Icon(
-                          _showPass ? Icons.visibility : Icons.visibility_off,
-                          color: Constants.mainColor,
-                        ))
-                  ]),
+                BlocConsumer<LoginBloc, LoginState>(
+                  listener: (context, loginstate) {
+                    if (loginstate is LoginStateToggleShow) {
+                      _showPass = loginstate.isShow;
+                    }
+                    if (loginstate is LoginStateFormatChecking) {
+                      _isUsernameErr = loginstate.isUsernameErr;
+                      _isPasswordErr = loginstate.isPasswordErr;
+                    }
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: 300 * SizeConfig.ratioWidth,
+                      child: Stack(
+                          alignment: AlignmentDirectional.centerEnd,
+                          children: [
+                            TextField(
+                              obscureText: _showPass,
+                              controller: passController,
+                              maxLength: 20,
+                              style: TextStyle(
+                                  fontSize: 25 * SizeConfig.ratioFont,
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                  fillColor: Colors.red,
+                                  labelText: "Mật khẩu",
+                                  labelStyle: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 20 * SizeConfig.ratioFont,
+                                  ),
+                                  errorText: _isPasswordErr
+                                      ? "Mật khẩu phải dài hơn "
+                                          "${Constants.minLengthPassWord} ký tự"
+                                      : null,
+                                  errorStyle: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 15 * SizeConfig.ratioFont)),
+                              onChanged: (_) {
+                                BlocProvider.of<LoginBloc>(context).add(
+                                    LoginEventChecking(passController.text,
+                                        userController.text));
+                                //Yêu cầu Bloc check dữ liệu username và password
+                              },
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<LoginBloc>(context)
+                                      .add(LoginEventToggleShow(_showPass));
+                                },
+                                icon: Icon(
+                                  _showPass
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Constants.mainColor,
+                                ))
+                          ]),
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 40 * SizeConfig.ratioHeight,
@@ -122,14 +148,14 @@ class LoginScreen extends StatelessWidget {
                 CustomizedButton(
                   text: "Đăng nhập",
                   onPressed: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MainScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
                     );
                   },
                 )
-               
               ]),
-            )));
+        )));
   }
 }

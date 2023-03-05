@@ -7,7 +7,7 @@ factory ItemModel.fromJson(Map<String, dynamic> json) {
       json['itemId'],
       json['itemName'],
       json['unit'] =  UnitModel.fromJson(json["unit"]),
-      json["itemClass"] == null ? null as ItemClassModel : ItemClassModel.fromJson(json["itemClass"]),
+      json["itemClass"] == null ?  ItemClassModel('') : ItemClassModel.fromJson(json["itemClass"]),
       json['minimumStockLevel'],
       json['price'],
     );

@@ -10,7 +10,7 @@ abstract class GoodsReceiptRepository {
       double quantity,
       double? sublotSize,
       String purchaseOrderNumber,
-      String locationId,
+      String? locationId,
       DateTime? productionDate,
       DateTime? expirationDate);
   Future<List<GoodsReceipt>> getCompletedGoodsReceipts();

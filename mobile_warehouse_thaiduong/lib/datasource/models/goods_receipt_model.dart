@@ -1,10 +1,8 @@
 import 'package:mobile_warehouse_thaiduong/datasource/models/employee_model.dart';
 import 'package:mobile_warehouse_thaiduong/datasource/models/item_model.dart';
 import 'package:mobile_warehouse_thaiduong/datasource/models/location_model.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/employee.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/goods_receipt.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/location.dart';
 
 class GoodsReceiptLotModel extends GoodsReceiptLot {
   GoodsReceiptLotModel(
@@ -20,17 +18,16 @@ class GoodsReceiptLotModel extends GoodsReceiptLot {
   factory GoodsReceiptLotModel.fromJson(Map<String, dynamic> json) {
     return GoodsReceiptLotModel(
       json['goodsReceiptLotId'],
-      json['item'] == null
-          ? null as ItemModel
-          : ItemModel.fromJson(json["item"]),
+      json['itemId'],
+      //= ItemModel.fromJson(json["item"]),
       json['quantity'],
       json['sublotSize'],
       json['purchaseOrderNumber'],
-      // json['employee'] = Employee('', ''),
+      json['employeeId'],
       // json['location'] = Location('', <ItemLot>[]),
-      json['employee'] == null
-          ? EmployeeModel("", "")
-          : EmployeeModel.fromJson(json["employee"]),
+      // json['employee'] == null
+      //     ? EmployeeModel("", "")
+      //     : EmployeeModel.fromJson(json["employee"]),
       json['location'] == null
           ? LocationModel('', <ItemLot>[])
           : LocationModel.fromJson(json["location"]),

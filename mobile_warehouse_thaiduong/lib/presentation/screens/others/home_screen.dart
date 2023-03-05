@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_warehouse_thaiduong/function.dart';
-import 'package:mobile_warehouse_thaiduong/presentation/screens/others/login_screen.dart';
 
 
 import '../../../constant.dart';
@@ -42,10 +41,11 @@ class HomeScreen extends StatelessWidget {
                 CustomizedButton(
                   text: "Đăng nhập",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
+                     Navigator.pushNamed(context, '//');
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => LoginScreen()),
+                    // );
                   },
                 ),
               ],

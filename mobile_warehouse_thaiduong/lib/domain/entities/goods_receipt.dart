@@ -5,21 +5,21 @@ import 'package:mobile_warehouse_thaiduong/domain/entities/location.dart';
 
 class GoodsReceiptLot extends Equatable {
   String? goodsReceiptLotId;
-  Item? item;
+  String? itemId;
   double? quantity;
   double? sublotSize;
   String? purchaseOrderNumber;
-  Employee? employee;
+  String? employeeId;
   Location? location;
   DateTime? productionDate;
   DateTime? expirationDate;
   GoodsReceiptLot(
       this.goodsReceiptLotId,
-      this.item,
+      this.itemId,
       this.quantity,
       this.sublotSize,
       this.purchaseOrderNumber,
-      this.employee,
+      this.employeeId,
       this.location,
       this.productionDate,
       this.expirationDate);
