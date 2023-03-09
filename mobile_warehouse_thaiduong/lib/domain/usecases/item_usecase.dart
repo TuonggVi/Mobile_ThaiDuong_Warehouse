@@ -9,8 +9,8 @@ class ItemUsecase {
     return items;
   }
 
-  Future<Item> getItemByItemId(String itemId) async {
-    final item = itemRepository.getItemByItemId(itemId);
-    return item;
-  }
+  // Future<Item> getItemByItemId(String itemId) async {
+  //   final item = itemRepository.getItemByItemId(itemId);
+  //   return item;
+  // }
 }

@@ -11,10 +11,8 @@ final injector = GetIt.instance;
 Future<void> initializeDependencies() async {
 //register data service
   injector.registerSingleton<LoginService>(LoginService());
-
 // register repository
   injector.registerSingleton<LoginRepository>(LoginRepositoryImpl(injector()));
-
 // register usecase
   injector.registerSingleton<LoginUsecase>(LoginUsecase(injector()));
 // register bloc

@@ -1,3 +1,4 @@
+import 'package:mobile_warehouse_thaiduong/domain/entities/department.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/goods_issue.dart';
 import 'package:mobile_warehouse_thaiduong/domain/repositories/department_repository.dart';
@@ -7,7 +8,7 @@ class GoodsIssueUseCase {
   final DepartmentRepository departmentRepository;
   final GoodsIssueRepository goodsIssueRepository;
   GoodsIssueUseCase(this.departmentRepository, this.goodsIssueRepository);
-  Future<List<String>> getAllDepartment() async {
+  Future<List<Department>> getAllDepartment() async {
     final departments = departmentRepository.getAllDepartment();
     return departments;
   }

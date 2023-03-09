@@ -3,7 +3,7 @@ import 'package:mobile_warehouse_thaiduong/domain/entities/goods_receipt.dart';
 
 abstract class GoodsReceiptRepository {
   Future<ErrorPackage> postNewGoodsReceipt(String goodsReceiptId,
-      String purchaseOrderNumber, List<GoodsReceiptLot> lots);
+       List<GoodsReceiptLot> lots);
   Future<ErrorPackage> updateDetailLotReceipt(
       String goodsReceiptLotId,
       String itemId,

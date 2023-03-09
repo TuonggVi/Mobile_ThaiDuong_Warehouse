@@ -53,3 +53,18 @@ class GoodsIssueModel extends GoodsIssue {
     );
   }
 }
+
+
+
+class GoodsIssueEntryViewModel extends IssueEntryView {
+  GoodsIssueEntryViewModel(
+      super.itemName, super.requestSublotSize, super.requestQuantity, super.unit);
+  factory GoodsIssueEntryViewModel.fromJson(Map<String, dynamic> json) {
+    return GoodsIssueEntryViewModel(
+      json['itemName'],
+      json['requestSublotSize'],
+      json['requestQuantity'],
+      json['unit'] 
+    );
+  }
+}

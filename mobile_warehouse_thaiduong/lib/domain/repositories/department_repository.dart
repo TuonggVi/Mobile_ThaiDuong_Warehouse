@@ -1,3 +1,5 @@
+import 'package:mobile_warehouse_thaiduong/domain/entities/department.dart';
+
 abstract class DepartmentRepository {
-  Future<List<String>> getAllDepartment();
+  Future<List<Department>> getAllDepartment();
 }

@@ -27,7 +27,8 @@ class _CreateNewReceiptScreenState extends State<CreateNewReceiptScreen> {
           style: TextStyle(fontSize: 22 * SizeConfig.ratioFont),
         ),
       ),
-      body: Column(
+      body: 
+      Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
         

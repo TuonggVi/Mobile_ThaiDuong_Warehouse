@@ -7,11 +7,12 @@ import 'package:mobile_warehouse_thaiduong/presentation/bloc/events/login_events
 import 'package:mobile_warehouse_thaiduong/presentation/bloc/states/login_states.dart';
 import 'package:mobile_warehouse_thaiduong/presentation/screens/others/main_screen.dart';
 import 'package:mobile_warehouse_thaiduong/presentation/widgets/button_widget.dart';
+import 'package:mobile_warehouse_thaiduong/presentation/widgets/drawer_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController userController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  bool _showPass = false;
+  bool _showPass = true;
   bool _isUsernameErr = false;
   bool _isPasswordErr = false;
 
@@ -44,7 +45,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ],
         ),
-        // endDrawer: DrawerUser(),
+        endDrawer: DrawerUser(),
         body: SingleChildScrollView(
             child: Center(
           child: Column(
@@ -134,8 +135,8 @@ class LoginScreen extends StatelessWidget {
                                 },
                                 icon: Icon(
                                   _showPass
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Constants.mainColor,
                                 ))
                           ]),
