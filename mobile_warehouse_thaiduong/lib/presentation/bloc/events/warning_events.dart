@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 abstract class WarningEvent extends Equatable {}
-// hiển thị list hạn sử dụng còn lại 
+
+// hiển thị list hạn sử dụng còn lại
 class LoadExpirationEvent extends WarningEvent {
   DateTime timestamp;
   LoadExpirationEvent(this.timestamp);
@@ -9,22 +10,26 @@ class LoadExpirationEvent extends WarningEvent {
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
+
 // tìm sản phẩm theo hạn sử dụng còn lại
-class  SearchExpirationWarningEvent extends WarningEvent {
+class SelectExpirationWarningEvent extends WarningEvent {
   DateTime timestamp;
-  SearchExpirationWarningEvent(this.timestamp);
+  DateTime ExpirationDate;
+  SelectExpirationWarningEvent(this.timestamp, this.ExpirationDate);
   @override
-  List<Object> get props => [timestamp];
+  List<Object> get props => [timestamp, ExpirationDate];
 }
-// hiển thị danh sách sản phẩm theo hạn sử dụng còn lại 
-class  ExpirationWarningEvent extends WarningEvent {
+
+// hiển thị danh sách sản phẩm theo hạn sử dụng còn lại
+class ExpirationWarningEvent extends WarningEvent {
   DateTime timestamp;
   DateTime ExpirationDate;
   ExpirationWarningEvent(this.timestamp, this.ExpirationDate);
   @override
-  List<Object> get props => [timestamp, ExpirationDate];
+  List<Object> get props => [timestamp];
 }
-// hiển thị list kho hàng 
+
+// hiển thị list kho hàng
 class LoadWarehouseEvent extends WarningEvent {
   DateTime timestamp;
   LoadWarehouseEvent(this.timestamp);
@@ -32,18 +37,21 @@ class LoadWarehouseEvent extends WarningEvent {
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
+
 // tìm sản phẩm theo kho hàng
-class  SearchMinimumStockWarningEvent extends WarningEvent {
+class SelectWarehouseEvent extends WarningEvent {
   DateTime timestamp;
-  SearchMinimumStockWarningEvent(this.timestamp);
+  String Warehouse;
+  SelectWarehouseEvent(this.timestamp, this.Warehouse);
   @override
-  List<Object> get props => [timestamp];
+  List<Object> get props => [timestamp, Warehouse];
 }
+
 // hiển thị danh sách sản phẩm dưới số lượng tồn kho tối thiểu
 class MinimumStockWarningEvent extends WarningEvent {
   DateTime timestamp;
-  String Department;
-  MinimumStockWarningEvent(this.timestamp, this.Department);
+  String Warehouse;
+  MinimumStockWarningEvent(this.timestamp, this.Warehouse);
   @override
-  List<Object> get props => [timestamp, Department];
+  List<Object> get props => [timestamp];
 }

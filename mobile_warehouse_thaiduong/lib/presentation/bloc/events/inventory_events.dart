@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 abstract class InventoryEvent extends Equatable {}
-// hiển thị list hạn sử dụng còn lại 
+
+// hiển thị list hạn sử dụng còn lại
 class LoadExpirationEvent extends InventoryEvent {
   DateTime timestamp;
   LoadExpirationEvent(this.timestamp);
@@ -9,8 +10,8 @@ class LoadExpirationEvent extends InventoryEvent {
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-// nhập thông tin tìm hàng tồn kho
-class SearchInventoryEvent extends InventoryEvent {
+// Hiển thị hàng tồn kho theo thông tin tìm kiếm
+class LoadInventoryEvent extends InventoryEvent {
   DateTime timestamp;
   String ItemId;
   String ItemName;
@@ -18,7 +19,7 @@ class SearchInventoryEvent extends InventoryEvent {
   DateTime enddate;
   DateTime ExpirationDate;
   // hạn sử dụng còn lại 
-  SearchInventoryEvent(
+  LoadInventoryEvent(
     this.timestamp,
     this.ItemId,
     this.ItemName, 
@@ -29,14 +30,3 @@ class SearchInventoryEvent extends InventoryEvent {
   List<Object> get props => [timestamp];
 }
 
-class LoadInventoryEvent extends InventoryEvent {
-  DateTime timestamp;
-  String ItemId;
-
-  LoadInventoryEvent(
-    this.timestamp,
-    this.ItemId   
-    );
-  @override
-  List<Object> get props => [timestamp];
-}

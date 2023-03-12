@@ -27,7 +27,6 @@ class ConfirmLotAdjustmentEvent extends AdjustmentEvent {
   DateTime timestamp;
   String LotId;
   ConfirmLotAdjustmentEvent(this.timestamp, this.LotId);
-
   @override
   List<Object> get props => [timestamp];
 }

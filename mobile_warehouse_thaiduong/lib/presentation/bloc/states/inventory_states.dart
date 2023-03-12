@@ -3,27 +3,24 @@ import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
 
 abstract class InventoryState extends Equatable {}
-// Hiển thị list hạn sử dụng còn lại
-class LoadExpirationLoadingState extends InventoryState {
+// hiển thị list hạn sử dụng còn lại
+class ExpirationLoadingState extends InventoryState {
   DateTime timestamp;
-  List<String> Expiration;
-  LoadExpirationLoadingState(this.timestamp, this.Expiration);
+  ExpirationLoadingState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-// Tra cứu tồn kho thành phẩm và nguyên vật liệu
-class FillInfoInventoryState extends InventoryState {
+class LoadExpirationSuccessState extends InventoryState {
   DateTime timestamp;
-  FillInfoInventoryState(
-    this.timestamp,
-  );
+  List <DateTime> ExpirationDate;
+  LoadExpirationSuccessState(this.timestamp, this.ExpirationDate);
   @override
-  List<Object> get props => [timestamp];
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
 }
 
-
-// hiển thị danh sách truy xuất
+// hiển thị danh sách đã lọc
 class LoadInventorySuccessState extends InventoryState {
   DateTime timestamp;
   List<ItemLot> itemLots;

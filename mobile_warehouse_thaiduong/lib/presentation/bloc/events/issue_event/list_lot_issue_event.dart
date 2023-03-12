@@ -8,7 +8,7 @@ class LoadGoodsIssueLotSuggestEvent extends GoodsIssueLotEvent {
   DateTime timestamp;
   LoadGoodsIssueLotSuggestEvent(this.timestamp);
   @override
-  // TODO: implement props
+
   List<Object?> get props => [timestamp];
 }
 
@@ -17,7 +17,7 @@ class AddGoodsIssueLotEvent extends GoodsIssueLotEvent {
   ItemLot goodsIssueLot;
   AddGoodsIssueLotEvent(this.timestamp, this.goodsIssueLot);
   @override
-  // TODO: implement props
+
   List<Object?> get props => [timestamp];
 }
 
@@ -25,7 +25,6 @@ class PostGoodsIssueLotEvent extends GoodsIssueLotEvent {
   DateTime timestamp;
   PostGoodsIssueLotEvent(this.timestamp);
   @override
-  // TODO: implement props
   List<Object?> get props => [timestamp];
 }
 

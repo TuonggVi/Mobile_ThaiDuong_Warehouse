@@ -6,7 +6,6 @@ class FillInfoLotReceiptEvent extends Equatable {
   List<Object?> get props => throw UnimplementedError();
 }
 
-
 class GetAllItemEvent extends FillInfoLotReceiptEvent {
   DateTime timestamp;
   GetAllItemEvent(this.timestamp);

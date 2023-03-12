@@ -4,62 +4,55 @@ import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
 
 abstract class ShelveState extends Equatable {}
 
-// Tìm kệ theo mã sản phẩm
-class SearchShelveByIdState extends ShelveState {
+// Hiển thị danh sách mã sp
+class LoadAllItemIdLoadingState extends ShelveState {
   DateTime timestamp;
-  SearchShelveByIdState(this.timestamp);
+  LoadAllItemIdLoadingState(this.timestamp);
   @override
   List<Object> get props => [timestamp];
 }
 
-
-// Hiển thị kệ theo mã sản phẩm
-class LoadShelveByIdSuccessState extends ShelveState {
-  final DateTime timestamp;
-  List<ItemLot> itemLots;
-  LoadShelveByIdSuccessState(this.timestamp, this.itemLots);
-  @override
-  List<Object> get props => [timestamp, itemLots];
-}
-
-class LoadShelveByIdFailState extends ShelveState {
-  ErrorPackage status;
+// Trả về list mã sản phẩm
+class LoadAllItemIdSuccessState extends ShelveState {
   DateTime timestamp;
-  LoadShelveByIdFailState(
-    this.status,
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [status, timestamp];
-}
-
-class LoadShelveByIdLoadingState extends ShelveState {
-  ErrorPackage status;
-  DateTime timestamp;
-  LoadShelveByIdLoadingState(
-    this.status,
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [status, timestamp];
-}
-
-// Tìm kệ theo vị trí
-class SearchShelveByLocationState extends ShelveState {
-  final DateTime timestamp;
-
-  SearchShelveByLocationState(this.timestamp);
+  List<String> itemId;
+  LoadAllItemIdSuccessState(this.timestamp, this.itemId);
   @override
   List<Object> get props => [timestamp];
 }
 
+// Tìm kệ theo mã và tên sp
+class SearchShelveByIdEvent extends ShelveState {
+  DateTime timestamp;
+  String itemId;
+  String itemName;
+  SearchShelveByIdEvent(this.timestamp, this.itemId, this.itemName);
+  @override
+  List<Object> get props => [timestamp, itemId];
+}
 
-// Hiển thị danh sách kệ theo vị trí
+// List vị trí
+class LoadAllLocationLoadingState extends ShelveState {
+  DateTime timestamp;
+  LoadAllLocationLoadingState(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
 
-class LoadShelveByLocationState extends ShelveState {
+// Trả về list vị trí
+class LoadAllLocationSuccessState extends ShelveState {
+  DateTime timestamp;
+  List<String> Location;
+  LoadAllLocationSuccessState(this.timestamp, this.Location);
+  @override
+  List<Object> get props => [timestamp];
+}
+
+// Hiển thị danh sách sản phẩm tìm kiếm 
+class LoadShelveByLocationSuccessState extends ShelveState {
   final DateTime timestamp;
   List<ItemLot> itemLots;
-  LoadShelveByLocationState(this.timestamp, this.itemLots);
+  LoadShelveByLocationSuccessState(this.timestamp, this.itemLots);
   @override
   List<Object> get props => [timestamp, itemLots];
 }
@@ -75,10 +68,10 @@ class LoadShelveByLocationFailState extends ShelveState {
   List<Object> get props => [status, timestamp];
 }
 
-class LoadShelveByLocationLoadingState extends ShelveState {
+class ShelveByLocationLoadingState extends ShelveState {
   ErrorPackage status;
   DateTime timestamp;
-  LoadShelveByLocationLoadingState(
+  ShelveByLocationLoadingState(
     this.status,
     this.timestamp,
   );

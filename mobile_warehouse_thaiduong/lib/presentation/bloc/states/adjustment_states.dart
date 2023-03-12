@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/item.dart';
+
 
 abstract class AdjustmentState extends Equatable {}
 // Scan Barcode
+class ScanQrLotAdjustmentSuccessState extends AdjustmentState {
+  DateTime timestamp;
+  Item item;
+  ScanQrLotAdjustmentSuccessState(this.timestamp, this.item);
+  @override
+  List<Object> get props => [timestamp, item];
+}
 class ScanQrLotAdjustmentLoadingState extends AdjustmentState {
   DateTime timestamp;
   ScanQrLotAdjustmentLoadingState(this.timestamp);
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class ScanQrLotAdjustmentSuccessState extends AdjustmentState {
-  DateTime timestamp;
-  List <ItemLot> itemLots;
-  ScanQrLotAdjustmentSuccessState(this.timestamp, this.itemLots);
   @override
   List<Object> get props => [timestamp];
 }

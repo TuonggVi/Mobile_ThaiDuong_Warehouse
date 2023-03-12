@@ -1,58 +1,67 @@
 import 'package:equatable/equatable.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/goods_issue.dart';
 
 abstract class ListGoodsIssueLotState extends Equatable {}
 
-class ListGoodsIssueLotLoadingState extends Equatable {
+//----------
+class LoadGoodsIssueLotSuggestSuccess extends ListGoodsIssueLotState {
   DateTime timestamp;
-  ListGoodsIssueLotLoadingState(this.timestamp);
-  
+  List<GoodsIssueLot> lots;
+  LoadGoodsIssueLotSuggestSuccess(this.timestamp, this.lots);
   @override
-  // TODO: implement props
-  List<Object?> get props => [timestamp];
+ 
+  List<Object?> get props => [timestamp, lots];
+}
+class LoadingLoadGoodsIssueLotSuggest extends ListGoodsIssueLotState {
+  DateTime timestamp;
+  LoadingLoadGoodsIssueLotSuggest(this.timestamp);
+  @override
 
+  List<Object?> get props => [timestamp];
+}
+class LoadGoodsIssueLotSuggestFail extends ListGoodsIssueLotState {
+DateTime timestamp;
+  ErrorPackage status;
+  LoadGoodsIssueLotSuggestFail(this.timestamp, this.status);
+  @override
+
+  List<Object?> get props => [timestamp];
+}
+//--------
+class AddIsolationLoadingState extends ListGoodsIssueLotState {
+  DateTime timestamp;
+  AddIsolationLoadingState(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
+
+class AddIsolationSuccessState extends ListGoodsIssueLotState {
+  DateTime timestamp;
+  AddIsolationSuccessState(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
 }
 
 //--------
-class AddGoodsIssueLotStateSuccess extends ListGoodsIssueLotState {
+class PostGoodsIssueLotSuccess extends ListGoodsIssueLotState {
   DateTime timestamp;
-  AddGoodsIssueLotStateSuccess(this.timestamp);
+  PostGoodsIssueLotSuccess(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-
-class PostGoodsIssueLotStateSuccess extends ListGoodsIssueLotState {
-  ErrorPackage statusRequest;
+class PostGoodsIssueLotLoading extends ListGoodsIssueLotState {
   DateTime timestamp;
-  PostGoodsIssueLotStateSuccess(this.timestamp, this.statusRequest);
+  PostGoodsIssueLotLoading(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-
-class PostGoodsIssueLotStateFailure extends ListGoodsIssueLotState {
-  String error;
+class PostGoodsIssueLotFail extends ListGoodsIssueLotState {
   DateTime timestamp;
-  PostGoodsIssueLotStateFailure(this.error, this.timestamp);
-  @override
-  // TODO: implement props
-  List<Object?> get props => [timestamp];
-}
-
-//-------------------
-class UpdateGoodsIssueLotReceiptStateSuccess extends ListGoodsIssueLotState {
-  DateTime timestamp;
-  UpdateGoodsIssueLotReceiptStateSuccess(this.timestamp);
-  @override
-  // TODO: implement props
-  List<Object?> get props => [timestamp];
-}
-
-class UpdateGoodsIssueLotReceiptStateFailure extends ListGoodsIssueLotState {
-  DateTime timestamp;
-  UpdateGoodsIssueLotReceiptStateFailure(this.timestamp);
+  ErrorPackage status;
+  PostGoodsIssueLotFail(this.timestamp, this.status);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
