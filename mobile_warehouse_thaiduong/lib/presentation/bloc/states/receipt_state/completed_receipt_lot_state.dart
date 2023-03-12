@@ -13,7 +13,7 @@ class CompletedReceiptLoadingState extends Equatable {
   List<Object?> get props => [timestamp];
 
 }
-// chỗ này là CompletedReceiptSuccessState phải hông anh
+// c
 class LoadShelfIdsSuccessState extends CompletedReceiptLotState {
   List<String> shelfIds;
   DateTime timestamp;
