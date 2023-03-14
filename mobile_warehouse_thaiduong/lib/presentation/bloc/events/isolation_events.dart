@@ -1,46 +1,48 @@
 import 'package:equatable/equatable.dart';
 
 abstract class InventoryEvent extends Equatable {}
-
-// Tìm kiếm theo mã sp + tên
-class LoadIsolationEvent extends InventoryEvent {
+// Lấy thông tin lô hàng
+class GetAllItemEvent extends InventoryEvent {
   DateTime timestamp;
-  String ItemId;
-  String ItemName;
-  LoadIsolationEvent(
-    this.timestamp,
-    this.ItemId,
-    this.ItemName,
-  );
+  GetAllItemEvent(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
+// Chọn lô để cách ly
+class GetLotByItemIdEvent extends InventoryEvent {
+ DateTime timestamp;
+ String item;
+  GetLotByItemIdEvent(this.timestamp, this.item);
   @override
   List<Object> get props => [timestamp];
 }
 // Thêm hàng cách ly: điền số lượng cách ly + note
-class AddIsolationEvent extends InventoryEvent {
+class PostNewIsolationEvent extends InventoryEvent {
   DateTime timestamp;
-  String Notes;
-  double IsolationQuantity;
-  AddIsolationEvent(this.timestamp, this.Notes, this.IsolationQuantity);
+  String lotId;
+  String notes;
+  double isolationQuantity;
+  PostNewIsolationEvent(this.timestamp, this.lotId, this.notes, this.isolationQuantity);
   @override
-  List<Object> get props => [timestamp, Notes, IsolationQuantity];
+  List<Object> get props => [timestamp, notes, isolationQuantity];
 }
 
 // Xác nhận cách ly hàng hóa
 class ConfirmIsolationEvent extends InventoryEvent {
   DateTime timestamp;
+  String lotId;
   ConfirmIsolationEvent(
     this.timestamp,
+    this.lotId
   );
   @override
   List<Object> get props => [timestamp];
 }
 
-// Update danh sách hàng hóa cách ly
-class UpdateIsolationEvent extends InventoryEvent {
+// Danh sách hàng hóa đang chờ xử lý
+class GetAllIsolationLotEvent extends InventoryEvent {
   DateTime timestamp;
-  String Notes;
-  double IsolationQuantity;
-  UpdateIsolationEvent(this.timestamp, this.Notes, this.IsolationQuantity);
+  GetAllIsolationLotEvent(this.timestamp);
   @override
-  List<Object> get props => [timestamp, Notes, IsolationQuantity];
+  List<Object> get props => [timestamp];
 }

@@ -1,32 +1,25 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/lot_adjustment.dart';
 
 abstract class AdjustmentEvent extends Equatable {}
 
-class ScanQrLotAdjustmentEvent extends AdjustmentEvent {
+class GetLotDetailEvent extends AdjustmentEvent {
   DateTime timestamp;
-  ScanQrLotAdjustmentEvent(this.timestamp);
+  String lotId;
+  GetLotDetailEvent(this.timestamp, this.lotId);
   @override
   List<Object> get props => [timestamp];
 }
 
 class UpdateLotAdjustmentQuantityEvent extends AdjustmentEvent {
   DateTime timestamp;
-  double AfterQuantity;
-  String Notes;
-  String purchaseOrderNumber;
+  LotAdjustment lotAdjustment;
   UpdateLotAdjustmentQuantityEvent(
     this.timestamp, 
-    this.AfterQuantity, 
-    this.Notes, 
-    this.purchaseOrderNumber);
+    this.lotAdjustment
+   );
   @override
   List<Object> get props => [timestamp];
 }
 
-class ConfirmLotAdjustmentEvent extends AdjustmentEvent {
-  DateTime timestamp;
-  String LotId;
-  ConfirmLotAdjustmentEvent(this.timestamp, this.LotId);
-  @override
-  List<Object> get props => [timestamp];
-}
+

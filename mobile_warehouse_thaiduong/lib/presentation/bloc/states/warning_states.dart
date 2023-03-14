@@ -5,97 +5,103 @@ import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
 
 abstract class WarningState extends Equatable {}
 
-// hiển thị list hạn sử dụng còn lại
-class ExpirationLoadingState extends WarningState {
+/// hiển thị list hạn sử dụng còn lại
+class GetExpirationSuccessState extends WarningState {
   DateTime timestamp;
-  ExpirationLoadingState(this.timestamp);
+  List <String> expirationDate;
+  GetExpirationSuccessState(this.timestamp, this.expirationDate);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class LoadExpirationSuccessState extends WarningState {
+class GetExpirationLoadingState extends WarningState {
   DateTime timestamp;
-  List <DateTime> ExpirationDate;
-  LoadExpirationSuccessState(this.timestamp, this.ExpirationDate);
+  GetExpirationLoadingState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-// chọn hạn sử dụng còn lại 
-class SelectExpirationWarningState extends WarningState {
+class GetExpirationFailState extends WarningState {
   DateTime timestamp;
-  DateTime ExpirationDate;
-  SelectExpirationWarningState(this.timestamp, this.ExpirationDate);
+  ErrorPackage status;
+  GetExpirationFailState(this.timestamp, this.status);
   @override
-  List<Object> get props => [timestamp, ExpirationDate];
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
 }
-
 // hiển thị danh sách sản phẩm theo hạn sử dụng còn lại
 class ExpirationWarningSuccessState extends WarningState {
   DateTime timestamp;
-  List <Item> item; 
-  ExpirationWarningSuccessState(this.timestamp, this.item);
+  List <ItemLot> itemLot;
+  ExpirationWarningSuccessState(this.timestamp, this.itemLot);
   @override
-  List<Object> get props => [timestamp, item];
+  List<Object> get props => [timestamp];
 }
 class ExpirationWarningLoadingState extends WarningState {
   DateTime timestamp;
-  ErrorPackage status;
-  ExpirationWarningLoadingState(this.timestamp, this.status);
+
+  ExpirationWarningLoadingState(this.timestamp);
   @override
-  List<Object> get props => [timestamp, status];
+  List<Object> get props => [timestamp];
 }
 class ExpirationWarningFailState extends WarningState {
   DateTime timestamp;
   ErrorPackage status;
   ExpirationWarningFailState(this.timestamp, this.status);
   @override
-  List<Object> get props => [timestamp, status];
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
 }
-//---------------------
+
 // hiển thị list kho hàng
-class WarehouseLoadingState extends WarningState {
+class GetWarehouseSuccessState extends WarningState {
   DateTime timestamp;
-  WarehouseLoadingState(this.timestamp);
+  List <String> warehouse;
+  GetWarehouseSuccessState(this.timestamp, this.warehouse);
   @override
-  // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class LoadWarehouseSuccessState extends WarningState {
+class GetWarehouseLoadingState extends WarningState {
   DateTime timestamp;
-  List <String> Warehouse;
-  LoadWarehouseSuccessState(this.timestamp, this.Warehouse);
+  GetWarehouseLoadingState(this.timestamp);
   @override
-  // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-// chọn kho hàng
-class SelectWarehouseState extends WarningState {
+class GetWarehouseFailState extends WarningState {
   DateTime timestamp;
-  String Warehouse;
-  SelectWarehouseState(this.timestamp, this.Warehouse);
+  ErrorPackage status;
+  GetWarehouseFailState(this.timestamp, this.status);
   @override
-  List<Object> get props => [timestamp, Warehouse];
+  List<Object?> get props => [timestamp];
 }
 // hiển thị danh sách sản phẩm dưới số lượng tồn kho tối thiểu
-class MinimumStockWarningSuccessState extends WarningState {
+class MinimumStockWarningEvent extends WarningState {
   DateTime timestamp;
-  List<Item> item;
-  MinimumStockWarningSuccessState(this.timestamp, this.item);
+  String warehouse;
+  MinimumStockWarningEvent(this.timestamp, this.warehouse);
   @override
   List<Object> get props => [timestamp];
 }
 
+class  MinimumStockWarningSuccessState extends WarningState {
+  DateTime timestamp;
+  List <ItemLot> itemLot;
+  MinimumStockWarningSuccessState(this.timestamp, this.itemLot);
+  @override
+  List<Object> get props => [timestamp];
+}
+class MinimumStockWarningLoadingState extends WarningState {
+  DateTime timestamp;
+
+  MinimumStockWarningLoadingState(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
 class MinimumStockWarningFailState extends WarningState {
   DateTime timestamp;
   ErrorPackage status;
   MinimumStockWarningFailState(this.timestamp, this.status);
   @override
-  List<Object> get props => [timestamp, status];
-}
-class MinimumStockWarningLoadingState extends WarningState {
-  DateTime timestamp;
-  MinimumStockWarningLoadingState(this.timestamp);
-  @override
-  List<Object> get props => [timestamp];
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
 }

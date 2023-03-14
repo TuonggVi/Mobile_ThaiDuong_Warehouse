@@ -1,26 +1,56 @@
 import 'package:equatable/equatable.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/item.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
 
 abstract class InventoryState extends Equatable {}
-// hiển thị list hạn sử dụng còn lại
-class ExpirationLoadingState extends InventoryState {
+// List kho hàng
+class GetWarehouseIdSuccessState extends InventoryState {
   DateTime timestamp;
-  ExpirationLoadingState(this.timestamp);
+  List<String> warehouseId;
+  GetWarehouseIdSuccessState(this.timestamp, this.warehouseId);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class LoadExpirationSuccessState extends InventoryState {
+class GetWarehouseIdLoadingState extends InventoryState {
   DateTime timestamp;
-  List <DateTime> ExpirationDate;
-  LoadExpirationSuccessState(this.timestamp, this.ExpirationDate);
+  GetWarehouseIdLoadingState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-
-// hiển thị danh sách đã lọc
+class GetWarehouseIdFailState extends InventoryState {
+  DateTime timestamp;
+  GetWarehouseIdFailState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+// Lọc sp theo kho hàng
+class GetAllItemByWarehouseSuccessState extends InventoryState {
+  DateTime timestamp;
+  List<Item> item;
+  GetAllItemByWarehouseSuccessState(this.timestamp, this.item);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+class GetAllItemByWarehouseLoadingState extends InventoryState {
+  DateTime timestamp;
+  GetAllItemByWarehouseLoadingState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+class GetAllItemByWarehouseFailState extends InventoryState {
+  DateTime timestamp;
+  GetAllItemByWarehouseFailState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+// Truy xuất theo thông tin tìm kiếm
 class LoadInventorySuccessState extends InventoryState {
   DateTime timestamp;
   List<ItemLot> itemLots;
@@ -32,11 +62,10 @@ class LoadInventorySuccessState extends InventoryState {
 
 class LoadInventoryFailState extends InventoryState {
   DateTime timestamp;
-  ErrorPackage status;
-  LoadInventoryFailState(this.timestamp, this.status);
+  LoadInventoryFailState(this.timestamp);
   @override
   // TODO: implement props
-  List<Object?> get props => [timestamp, status];
+  List<Object?> get props => [timestamp];
 }
 
 class LoadInventoryLoadingState extends InventoryState {
