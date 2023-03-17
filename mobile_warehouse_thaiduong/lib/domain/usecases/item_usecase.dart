@@ -5,8 +5,14 @@ class ItemUsecase {
   final ItemRepository itemRepository;
   ItemUsecase(this.itemRepository);
   Future<List<Item>> getAllItem() async {
-    final items = itemRepository.getAllItems();
+    final items = itemRepository.getAllItem();
     return items;
+  }
+
+  //--
+  Future<List<Item>> getAllItemId() async {
+    final itemIds = itemRepository.getAllItemId();
+    return itemIds;
   }
 
   // Future<Item> getItemByItemId(String itemId) async {

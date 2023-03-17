@@ -7,4 +7,9 @@ abstract class InventoryRepository {
       String startDate, String endDate, String itemClassId);
   Future<List<InventoryLogEntry>> getInventoryByItemId(
       String startDate, String endDate, String itemId);
+      //
+  Future<List<InventoryLogEntry>> getAllItemByWarehouseId(
+      String warehouseId);
 }
+
+

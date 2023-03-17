@@ -10,9 +10,9 @@ class GetWarehouseIdEvent extends InventoryEvent {
   List<Object?> get props => [timestamp];
 }
 // lấy mã sp
-class GetAllItemByWarehouseIdEvent extends InventoryEvent {
+class GetAllItemIdByWarehouseIdEvent extends InventoryEvent {
   DateTime timestamp;
-  GetAllItemByWarehouseIdEvent(this.timestamp);
+  GetAllItemIdByWarehouseIdEvent(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];

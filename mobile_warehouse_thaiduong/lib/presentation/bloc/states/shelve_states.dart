@@ -41,8 +41,10 @@ class GetLotByItemIdLoadingState extends ShelveState {
 }
 class GetLotByItemIdFailState extends ShelveState {
   DateTime timestamp;
-  ErrorPackage status;
-  GetLotByItemIdFailState(this.timestamp, this.status);
+  // ErrorPackage status;
+  GetLotByItemIdFailState(this.timestamp, 
+  // this.status
+  );
   @override
   List<Object> get props => [timestamp];
 }
@@ -78,14 +80,14 @@ class GetLotByLocationSuccessState extends ShelveState {
 }
 
 class GetLotByLocationFailState extends ShelveState {
-  ErrorPackage status;
+  // ErrorPackage status;
   DateTime timestamp;
   GetLotByLocationFailState(
-    this.status,
+    // this.status,
     this.timestamp,
   );
   @override
-  List<Object> get props => [status, timestamp];
+  List<Object> get props => [ timestamp];
 }
 
 class GetLotByLocationLoadingState extends ShelveState {

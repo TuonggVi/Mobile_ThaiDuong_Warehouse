@@ -1,51 +1,107 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/department.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/goods_issue.dart';
 
-class CreateNewIssueState extends Equatable{
+import '../../../../domain/entities/item.dart';
+
+abstract class CreaNewIssueState extends Equatable {}
+
+class CreateNewIssueInitialState extends CreaNewIssueState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-
-}
-//--------
-class LoadDepartmentIdsSuccess extends CreateNewIssueState {
-  DateTime timestamp;
-  List<Department> department;
-  LoadDepartmentIdsSuccess(this.timestamp, this.department);
-  @override
-  // TODO: implement props
-  List<Object?> get props => [timestamp, department];
 }
 
-//--------
-class AddIssueEntrySuccess extends CreateNewIssueState {
+// class LoadItemDataLoadingState extends CreaNewIssueState {
+//   DateTime timestamp;
+//   LoadItemDataLoadingState(this.timestamp);
+
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [timestamp];
+// }
+
+// class LoadItemDataSuccessState extends CreaNewIssueState {
+//   DateTime timestamp;
+//   List<Item> items;
+//   LoadItemDataSuccessState(this.items, this.timestamp);
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [timestamp];
+// }
+
+// class LoadItemDataFailState extends CreaNewIssueState {
+//   DateTime timestamp;
+//   LoadItemDataFailState(this.timestamp);
+
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [timestamp];
+// }
+
+class LoadDepartmentLoadingState extends CreaNewIssueState {
   DateTime timestamp;
-  AddIssueEntrySuccess(this.timestamp);
+  LoadDepartmentLoadingState(this.timestamp);
+
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-//--------
-class PostNewGoodsIssueSuccess extends CreateNewIssueState {
+
+class LoadDepartmentSuccessState extends CreaNewIssueState {
+  List<Department> departments;
   DateTime timestamp;
-  PostNewGoodsIssueSuccess(this.timestamp);
+  LoadDepartmentSuccessState(this.departments, this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class PostNewGoodsIssueLoading extends CreateNewIssueState {
+//-------------------
+class UpdateEntryToGoodsIssueLoading extends CreaNewIssueState {
   DateTime timestamp;
-  PostNewGoodsIssueLoading(this.timestamp);
+  UpdateEntryToGoodsIssueLoading(this.timestamp);
+
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class PostNewGoodsIssueFail extends CreateNewIssueState {
+
+class UpdateEntryToGoodsIssueSuccess extends CreaNewIssueState {
   DateTime timestamp;
-  ErrorPackage status;
-  PostNewGoodsIssueFail(this.timestamp, this.status);
+  List<IssueEntryView> issueEntries;
+  UpdateEntryToGoodsIssueSuccess(this.timestamp, this.issueEntries);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+
+class UpdateEntryToGoodsIssueFailState extends CreaNewIssueState {
+  DateTime timestamp;
+  UpdateEntryToGoodsIssueFailState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+//--------------------
+class PostNewGoodsIssueLoadingState extends CreaNewIssueState {
+  DateTime timestamp;
+  PostNewGoodsIssueLoadingState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+
+class PostNewGoodsIssueSuccessState extends CreaNewIssueState {
+  DateTime timestamp;
+  PostNewGoodsIssueSuccessState(this.timestamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+
+class PostNewGoodsIssueFailState extends CreaNewIssueState {
+  DateTime timestamp;
+  PostNewGoodsIssueFailState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];

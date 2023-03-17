@@ -49,8 +49,10 @@ class GetLotByItemLoadingState extends IsolationState {
 
 class GetLotByItemFailState extends IsolationState {
   DateTime timestamp;
-  ErrorPackage status;
-  GetLotByItemFailState(this.timestamp, this.status);
+  // ErrorPackage status;
+  GetLotByItemFailState(this.timestamp, 
+  // this.status
+  );
   @override
   List<Object> get props => [timestamp];
 }

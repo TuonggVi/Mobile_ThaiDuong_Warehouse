@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/goods_issue.dart';
 
 abstract class FillInfoIssueEntryEvent extends Equatable {}
 
-class LoadItemsEvent extends FillInfoIssueEntryEvent {
+class GetAllItemIssueEvent extends FillInfoIssueEntryEvent {
   DateTime timestamp;
-  LoadItemsEvent(this.timestamp);
+  List<IssueEntryView> entries;
+  int index;
+  GetAllItemIssueEvent(this.timestamp, this.entries, this.index);
   @override
-  // TODO: implement props
-  List<Object?> get props => [timestamp];
+  List<Object> get props => [timestamp];
 }

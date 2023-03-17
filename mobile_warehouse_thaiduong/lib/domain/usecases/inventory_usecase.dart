@@ -4,6 +4,7 @@ import 'package:mobile_warehouse_thaiduong/domain/repositories/inventory_reposit
 class Inventoryusecase {
   final InventoryRepository inventoryRepository;
   Inventoryusecase(this.inventoryRepository);
+
   Future<List<InventoryLogEntry>> getInventoryByTime(
       String startDate, String endDate) async {
     final logEntries =
@@ -24,4 +25,13 @@ class Inventoryusecase {
         inventoryRepository.getInventoryByItemId(startDate, endDate, itemId);
     return logEntries;
   }
+
+//----
+ Future<List<String>> getAllItemByWarehouseId(
+      String warehouseIds) async {
+    final itemIds =
+        inventoryRepository.getAllItemByWarehouseId(warehouseIds);
+    return itemIds;
+  }
 }
+

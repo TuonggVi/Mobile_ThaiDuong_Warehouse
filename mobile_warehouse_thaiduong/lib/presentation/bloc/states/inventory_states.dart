@@ -28,24 +28,24 @@ class GetWarehouseIdFailState extends InventoryState {
   List<Object?> get props => [timestamp];
 }
 // Lọc sp theo kho hàng
-class GetAllItemByWarehouseSuccessState extends InventoryState {
+class GetAllItemIdByWarehouseSuccessState extends InventoryState {
   DateTime timestamp;
-  List<Item> item;
-  GetAllItemByWarehouseSuccessState(this.timestamp, this.item);
+  List<String> itemId;
+  GetAllItemIdByWarehouseSuccessState(this.timestamp, this.itemId);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class GetAllItemByWarehouseLoadingState extends InventoryState {
+class GetAllItemIdByWarehouseLoadingState extends InventoryState {
   DateTime timestamp;
-  GetAllItemByWarehouseLoadingState(this.timestamp);
+  GetAllItemIdByWarehouseLoadingState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class GetAllItemByWarehouseFailState extends InventoryState {
+class GetAllItemIdByWarehouseFailState extends InventoryState {
   DateTime timestamp;
-  GetAllItemByWarehouseFailState(this.timestamp);
+  GetAllItemIdByWarehouseFailState(this.timestamp);
   @override
   // TODO: implement props
   List<Object?> get props => [timestamp];
@@ -70,9 +70,13 @@ class LoadInventoryFailState extends InventoryState {
 
 class LoadInventoryLoadingState extends InventoryState {
   DateTime timestamp;
-  ErrorPackage status;
-  LoadInventoryLoadingState(this.timestamp, this.status);
+  // ErrorPackage status;
+  LoadInventoryLoadingState(this.timestamp, 
+  // this.status
+  );
   @override
   // TODO: implement props
-  List<Object?> get props => [timestamp, status];
+  List<Object?> get props => [timestamp, 
+  // status
+  ];
 }

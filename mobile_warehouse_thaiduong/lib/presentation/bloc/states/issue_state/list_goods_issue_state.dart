@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_warehouse_thaiduong/domain/entities/error_package.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/goods_issue.dart';
 
-abstract class ListGoodsIssueEvent extends Equatable {}
-//--------
-class LoadGoodsIssuesSuccess extends ListGoodsIssueEvent {
-  DateTime timestamp;
- List<GoodsIssueLot> Lots;
-  LoadGoodsIssuesSuccess(this.timestamp, this.Lots);
-  @override
+abstract class GoodsIssueState extends Equatable {}
 
-  List<Object?> get props => [timestamp, Lots];
-}
-class LoadingGoodsIssues extends ListGoodsIssueEvent {
+class LoadGoodsIssuesLoadingState extends GoodsIssueState {
   DateTime timestamp;
-  LoadingGoodsIssues(this.timestamp);
+  LoadGoodsIssuesLoadingState(this.timestamp);
   @override
-
+  // TODO: implement props
   List<Object?> get props => [timestamp];
 }
-class LoadGoodsIssuesFail extends ListGoodsIssueEvent {
-DateTime timestamp;
-  ErrorPackage status;
-  LoadGoodsIssuesFail(this.timestamp, this.status);
-  @override
 
+class LoadGoodsIssuesSuccessState extends GoodsIssueState {
+  DateTime timestamp;
+  List<GoodsIssue> goodsIssues;
+  LoadGoodsIssuesSuccessState(this.timestamp, this.goodsIssues);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timestamp];
+}
+
+class LoadGoodsIssuesFailState extends GoodsIssueState {
+  DateTime timestamp;
+  LoadGoodsIssuesFailState(this.timestamp);
+  @override
+  // TODO: implement props
   List<Object?> get props => [timestamp];
 }
