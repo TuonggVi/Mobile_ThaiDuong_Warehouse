@@ -60,7 +60,7 @@ class GoodsIssueService {
     } else {
       throw "Unable to retrieve posts.";
     }
-    return [
+    //return [
       // GoodsIssueModel('đơn 22-03-23', '119203', null, false, 'PKK', [
       //   GoodsIssueEntry(
       //       ItemModel('CDP001', '43111-Card HOLEE','cái', ItemClassModel('TP'), 100, 10),
@@ -83,7 +83,7 @@ class GoodsIssueService {
       //       [])
       // ]),
       
-    ];
+    //];
   }
 
   Future<List<GoodsIssueModel>> getCompletedGoodsissue() async {
@@ -178,7 +178,9 @@ class GoodsIssueService {
       "success",
     );
   }
-    Future<List<GoodsIssueLot>> getGoodsReceiptsHistoryByPO(purchaseOrderNumber) async {
+  // truy xuat lich su xuat kho
+    Future<List<GoodsIssueLot>> getGoodIsssueHistoryByPO(purchaseOrderNumber) async {
+      
     return [
       GoodsIssueLot('11', 1, 1,'11', '11'
        ),
@@ -189,6 +191,44 @@ class GoodsIssueService {
        ),GoodsIssueLot('11', 1, 1,'11', '11'
        ),GoodsIssueLot('11', 1, 1,'11', '11'
        ), 
+    ];
+  }
+     Future<List<GoodsIssueLot>> getGoodsIssueHistoryByReceiver(purchaseOrderNumber) async {
+    return [
+      GoodsIssueLot('11', 1, 1,'11', '11'
+       ),
+       GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ), 
+    ];
+  }
+  Future<List<GoodsIssueLot>> getGoodsIssueHistoryByItemId(itemId) async {
+    return [
+      GoodsIssueLot('11', 1, 1,'11', '11'
+       ),
+       GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ),GoodsIssueLot('11', 1, 1,'11', '11'
+       ), 
+    ];
+  }
+// thử giao diện
+   
+  Future<List<GoodsIssueLot>> getGoodsReceiptsHistoryTest(warehouse) async {
+    return [
+      GoodsIssueLot('11', 1, 1, '1','11'),
+      GoodsIssueLot('11', 1, 1, '1','11'),
+      GoodsIssueLot('11', 1, 1, '1','11'),
+      GoodsIssueLot('11', 1, 1, '1','11'),
+      GoodsIssueLot('11', 1, 1, '1','11'),
+      GoodsIssueLot('11', 1, 1, '1','11'), 
     ];
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse_thaiduong/function.dart';
 
 import '../../../constant.dart';
+import '../../../domain/entities/location.dart';
 import '../../bloc/blocs/shelve_bloc.dart';
 import '../../bloc/events/shelve_events.dart';
 import '../../bloc/states/shelve_states.dart';
@@ -18,7 +19,10 @@ class SearchShelfScreen extends StatefulWidget {
 }
 
 class _SearchShelfScreennState extends State<SearchShelfScreen> {
-  String location = '';
+  List<Warehouse> warehouseDropdownData = [];
+  Warehouse? selectedWarehouse;
+  String locations = '';
+  String locationId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +49,39 @@ class _SearchShelfScreennState extends State<SearchShelfScreen> {
                 return Column(children: [
                   Column(children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 340 * SizeConfig.ratioWidth,
-                        height: 60 * SizeConfig.ratioHeight,
-                        child: DropdownSearch<String?>(
-                            mode: Mode.MENU,
-                            items: state.location,
-                            showSearchBox: true,
-                            label: "Vị trí",
-                            onChanged: (value) {
-                              //  print(value);
-                              setState(() {
-                                location = value!;
-                              });
-                            },
-                            selectedItem: location),
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 340 * SizeConfig.ratioWidth,
+                      height: 60 * SizeConfig.ratioHeight,
+                      child: DropdownSearch<dynamic>(
+                        mode: Mode.MENU,
+                        items: state.warehouse
+                            .map((e) => e.locations)
+                            .toList(),
+                        showSearchBox: true,
+                        label: "Vị trí",
+                        onChanged: (value) {
+                          //  print(value);
+                          setState(() {
+                            selectedWarehouse = state.warehouse.firstWhere(
+                                (element) => element.locations == value);
+                          });
+                        },
+                        selectedItem: selectedWarehouse == null
+                            ? ''
+                            : selectedWarehouse!.locations,
                       ),
                     ),
+                  ),
                     CustomizedButton(
                         text: "Tìm kiếm",
                         onPressed: () {
                           BlocProvider.of<ShelveBloc>(context).add(
-                              GetLotByLocationEvent(DateTime.now(), location, state.location));
+                              GetLotByLocationEvent(
+                                DateTime.now(), 
+                                state.warehouse, 
+                                locations,
+                                state.warehouse ));
                         }),
                     const Divider(
                       indent: 30,
@@ -83,29 +97,35 @@ class _SearchShelfScreennState extends State<SearchShelfScreen> {
                 return Column(
                   children: [
                      Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 340 * SizeConfig.ratioWidth,
-                        height: 60 * SizeConfig.ratioHeight,
-                        child: DropdownSearch<String?>(
-                            mode: Mode.MENU,
-                            items: state.listLocation,
-                            showSearchBox: true,
-                            label: "Vị trí",
-                            onChanged: (value) {
-                              //  print(value);
-                              setState(() {
-                                location = value!;
-                              });
-                            },
-                            selectedItem: location),
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 340 * SizeConfig.ratioWidth,
+                      height: 60 * SizeConfig.ratioHeight,
+                      child: DropdownSearch<dynamic>(
+                        mode: Mode.MENU,
+                        items: state.listLocation
+                            .map((e) => e.locations)
+                            .toList(),
+                        showSearchBox: true,
+                        label: "Vị trí",
+                        onChanged: (value) {
+                          //  print(value);
+                          setState(() {
+                            selectedWarehouse = state.listLocation.firstWhere(
+                                (element) => element.locations == value);
+                          });
+                        },
+                        selectedItem: selectedWarehouse == null
+                            ? ''
+                            : selectedWarehouse!.locations,
                       ),
                     ),
+                  ),
                     CustomizedButton(
                         text: "Tìm kiếm",
                         onPressed: () {
                           BlocProvider.of<ShelveBloc>(context).add(
-                              GetLotByLocationEvent(DateTime.now(), location, state.listLocation));
+                              GetLotByLocationEvent(DateTime.now(), state.warehouse, locations, state.listLocation));
                         }),
                     const Divider(
                       indent: 30,
@@ -167,7 +187,45 @@ class _SearchShelfScreennState extends State<SearchShelfScreen> {
                   ],
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+               return Column(children: [
+                  Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 340 * SizeConfig.ratioWidth,
+                        height: 60 * SizeConfig.ratioHeight,
+                        child: DropdownSearch<dynamic>(
+                            mode: Mode.MENU,
+                            //items: state.location,
+                           // showSearchBox: true,
+                            label: "Vị trí",
+                             onChanged: (value) {
+                            //   //  print(value);
+                            //   setState(() {
+                            //     location = value!;
+                            //   });
+                            },
+                           selectedItem: selectedWarehouse == null
+                              ? ''
+                              : selectedWarehouse!.locations,
+                            ),
+                      ),
+                    ),
+                    CustomizedButton(
+                        text: "Tìm kiếm",
+                        onPressed: () {
+                         // BlocProvider.of<ShelveBloc>(context).add(
+                          //    GetLotByLocationEvent(DateTime.now(), location, state.location));
+                        }),
+                    const Divider(
+                      indent: 30,
+                      endIndent: 30,
+                      color: Constants.mainColor,
+                      thickness: 1,
+                    ),
+                  
+                  ])
+                ]);
               }
             }));
   }

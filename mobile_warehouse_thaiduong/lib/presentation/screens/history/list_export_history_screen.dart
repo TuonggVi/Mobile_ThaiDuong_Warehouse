@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, deprecated_member_use
+// ignore_for_file: prefer_const_constructors, avoid_print, deprecated_member_use, unused_import
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse_thaiduong/function.dart';
@@ -39,7 +39,9 @@ class _ListExportHistoryScreenState extends State<ListExportHistoryScreen> {
           BlocConsumer<HistoryBloc, HistoryState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is TestHistorySuccessState) {
+                if (//state is TestExportHistorySuccessState||
+                    state is AccessExportHistorySuccessState        
+                    ) {
                   return Column(
                     children: [
                       Padding(
@@ -58,7 +60,7 @@ class _ListExportHistoryScreenState extends State<ListExportHistoryScreen> {
                           height: 500 * SizeConfig.ratioHeight,
                           child: ListView.builder(
                               // shrinkWrap: true,
-                              itemCount: state.goodReceiptLots.length,
+                              itemCount: state.goodsIssueLot.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -81,15 +83,15 @@ class _ListExportHistoryScreenState extends State<ListExportHistoryScreen> {
                                               Icons.arrow_drop_down_sharp,
                                               size: 15 * SizeConfig.ratioFont),
                                           title: Text(
-                                              "Mã lô : ${state.goodReceiptLots[index].goodsReceiptLotId}"),
+                                              "Mã lô : ${state.goodsIssueLot[index].goodsIssueLotId}"),
                                           subtitle: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                  "Sản phẩm : ${state.goodReceiptLots[index].goodsReceiptLotId.toString()}  \nSố lượng : ${state.goodReceiptLots[index].quantity.toString()} \nVị trí : ${state.goodReceiptLots[index].location.toString()}"),
+                                                  "Tên sản phẩm : ${state.goodsIssueLot[index].goodsIssueLotId.toString()}  \nSố lượng xuất : ${state.goodsIssueLot[index].quantity.toString()} \nGhi chú : ${state.goodsIssueLot[index].note.toString()}"),
                                               Text(
-                                                  "Số PO : ${state.goodReceiptLots[index].purchaseOrderNumber.toString()} \nĐịnh mức : ${state.goodReceiptLots[index].sublotSize.toString()}"),
+                                                  "Kho hàng : ${state.goodsIssueLot[index].employee.toString()} \nBộ phận : ${state.goodsIssueLot[index].sublotSize.toString()}"),
                                             ],
                                           ),
                                           isThreeLine: true,
@@ -104,7 +106,7 @@ class _ListExportHistoryScreenState extends State<ListExportHistoryScreen> {
                           ));
                           Navigator.pushNamed(
                             context,
-                            '/export_history_screen',
+                            '/export_function_screen',
                           );
                         },
                         text: "Trở lại",

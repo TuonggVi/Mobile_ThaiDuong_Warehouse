@@ -18,7 +18,7 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
     on<ExpirationWarningEvent>((event, emit) async {
       emit(ExpirationWarningLoadingState(DateTime.now()));
       try {
-        final itemLot = await itemLotUsecase.getIsolatedItemLots();
+        final itemLot = await itemLotUsecase.getExpiredItemLots(DateTime.now());
         itemLot.isNotEmpty
             ? emit(ExpirationWarningSuccessState(DateTime.now(), itemLot))
             : emit(ExpirationWarningFailState(
@@ -45,7 +45,7 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
       try {
         final itemLots = await itemLotUsecase.getUnderStockminItemLots(event.warehouseId);
         itemLots.isNotEmpty
-            ? emit(MinimumStockWarningSuccessState(DateTime.now(), itemLots, event.listWarehouse,
+            ? emit(MinimumStockWarningSuccessState(DateTime.now(), itemLots,event.warehouseId, event.listWarehouse, event.listWarehouse, 
             ))
             : emit(MinimumStockWarningFailState(
                 DateTime.now(), ''));

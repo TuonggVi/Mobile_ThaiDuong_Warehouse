@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:equatable/equatable.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/department.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/goods_receipt.dart';
 
 import '../../../domain/entities/item.dart';
 import '../../../domain/entities/location.dart';
@@ -29,42 +30,34 @@ class GetAllInfoExportEvent extends HistoryEvent {
   List<Object> get props => [timestamp];
 }
 
-// lọc danh sách item theo kho hàng
-class GetItemByWarehouseEvent extends HistoryEvent {
+// lọc danh sách item xuất kho theo kho hàng
+class GetExportItemByWarehouseEvent extends HistoryEvent {
   DateTime timestamp;
   String warehouseId;
   List<Department> department;
-  List<Item> item;
+  List<Item> listAllItem;
+  List<Item> lisstItemByWarehouse;
   List<Warehouse> warehouse;
-  GetItemByWarehouseEvent(this.timestamp, this.warehouseId, this.item,
-      this.warehouse, this.department);
+  GetExportItemByWarehouseEvent(this.timestamp, this.warehouseId, this.listAllItem,
+      this.lisstItemByWarehouse, this.warehouse, this.department);
   @override
   List<Object> get props => [timestamp];
 }
-
-// Truy xuất lịch sử nhập kho
-class AccessImportHistoryEvent extends HistoryEvent {
+// lọc danh sách item nhập kho theo kho hàng
+class GetImportItemByWarehouseEvent extends HistoryEvent {
   DateTime timestamp;
-  String itemClass;
-  DateTime startDate;
-  DateTime endDate;
-  String itemId;
-  String department;
-  String receiver;
-  String purchaseOrderNumber;
-  AccessImportHistoryEvent(
-      this.timestamp,
-      this.itemClass,
-      this.startDate,
-      this.endDate,
-      this.itemId,
-      this.department,
-      this.receiver,
-      this.purchaseOrderNumber);
+  String warehouseId;
+  List<GoodsReceipt> goodReceipt;
+  List<Item> listAllItem;
+  List<Item> lisstItemByWarehouse;
+  List<Warehouse> warehouse;
+  GetImportItemByWarehouseEvent(this.timestamp, this.warehouseId, this.listAllItem,
+      this.lisstItemByWarehouse, this.warehouse, this.goodReceipt);
   @override
   List<Object> get props => [timestamp];
 }
 
+// truy xuất lịch sử nhập kho
 class AccessImportHistoryByPOEvent extends HistoryEvent {
   DateTime timestamp;
   String purchaseOrderNumber;
@@ -78,8 +71,14 @@ class AccessImportHistoryByPOEvent extends HistoryEvent {
 
 class AccessImportHistoryBySupplierEvent extends HistoryEvent {
   DateTime timestamp;
+  DateTime startDate;
+  DateTime endDate;
+  String supplier;
   AccessImportHistoryBySupplierEvent(
     this.timestamp,
+    this.startDate,
+    this.endDate,
+    this.supplier
   );
   @override
   List<Object> get props => [timestamp];
@@ -87,36 +86,16 @@ class AccessImportHistoryBySupplierEvent extends HistoryEvent {
 
 class AccessImportHistoryByItemIdEvent extends HistoryEvent {
   DateTime timestamp;
-  String itemId;
-  AccessImportHistoryByItemIdEvent(this.timestamp, this.itemId);
-  @override
-  List<Object> get props => [timestamp];
-}
-
-// Truy xuất lịch sử xuất kho
-class AccessExportHistoryEvent extends HistoryEvent {
-  DateTime timestamp;
-  String warehouse;
   DateTime startDate;
   DateTime endDate;
   String itemId;
-  String department;
-
-  //String purchaseOrderNumber;
-  AccessExportHistoryEvent(
-    this.timestamp,
-    this.warehouse,
-    this.startDate,
-    this.endDate,
-    this.itemId,
-    this.department,
-
-    //this.purchaseOrderNumber
-  );
+  AccessImportHistoryByItemIdEvent(
+      this.timestamp, this.startDate, this.endDate, this.itemId);
   @override
   List<Object> get props => [timestamp];
 }
 
+// truy xuất lịch sử xuất kho
 class AccessExportHistoryByPOEvent extends HistoryEvent {
   DateTime timestamp;
   String purchaseOrderNumber;
@@ -130,9 +109,13 @@ class AccessExportHistoryByPOEvent extends HistoryEvent {
 
 class AccessExportHistoryByReceiverEvent extends HistoryEvent {
   DateTime timestamp;
+  DateTime startDate;
+  DateTime endDate;
   String department;
   AccessExportHistoryByReceiverEvent(
     this.timestamp,
+    this.startDate,
+    this.endDate,
     this.department,
   );
   @override
@@ -141,8 +124,11 @@ class AccessExportHistoryByReceiverEvent extends HistoryEvent {
 
 class AccessExportHistoryByItemIdEvent extends HistoryEvent {
   DateTime timestamp;
+  DateTime startDate;
+  DateTime endDate;
   String itemId;
-  AccessExportHistoryByItemIdEvent(this.timestamp, this.itemId);
+  AccessExportHistoryByItemIdEvent(
+      this.timestamp, this.startDate, this.endDate, this.itemId);
   @override
   List<Object> get props => [timestamp];
 }

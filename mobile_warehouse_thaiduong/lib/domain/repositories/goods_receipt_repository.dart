@@ -15,10 +15,10 @@ abstract class GoodsReceiptRepository {
       DateTime? expirationDate);
   Future<List<GoodsReceipt>> getCompletedGoodsReceipts();
   Future<List<GoodsReceipt>> getUnCompletedGoodsReceipts();
+  Future<List<GoodsReceipt>> getAllGoodReceipt();
   // truy xuat lich su nhap kho
     Future<List<GoodsReceiptLot>> getGoodsReceiptsHistoryByPO(
       String purchaseOrderNumber);
-
       Future<List<GoodsReceiptLot>> getGoodsReceiptsHistoryBySupplier(
       DateTime startDate,
       DateTime endDate,);

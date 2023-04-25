@@ -12,13 +12,13 @@ import '../../../domain/entities/location.dart';
 
 abstract class HistoryState extends Equatable {}
 
-// lấy ds kho, bộ phận, item
+// lấy ds kho, ncc, item
 class GetAllInfoImportSuccessState extends HistoryState {
   DateTime timestamp;
   List<Item> item;
-  List<Warehouse> warehouse;
-  List<Department> department;
-  GetAllInfoImportSuccessState(this.timestamp, this. warehouse,this.item, this.department);
+  List<Warehouse> warehouse; // lưu warehouse 
+  List<GoodsReceipt> goodReceipt;
+  GetAllInfoImportSuccessState(this.timestamp, this. warehouse,this.item, this.goodReceipt);
   @override
   List<Object> get props => [timestamp];
 }
@@ -38,7 +38,7 @@ class GetAllInfoImportFailState extends HistoryState {
   List<Object> get props => [timestamp];
 }
 
-// lấy ds kho, ncc, item
+// lấy ds kho, bo phan, item
 class GetAllInfoExportSuccessState extends HistoryState {
   DateTime timestamp;
   List<Item> item;
@@ -65,33 +65,72 @@ class GetAllInfoExportFailState extends HistoryState {
   List<Object> get props => [timestamp];
 }
 
-// lọc danh sách item theo kho hàng
-class GetItemByWarehouseSuccessState extends HistoryState {
+// lọc danh sách item nhap kho theo kho hàng
+class GetImportItemByWarehouseSuccessState extends HistoryState {
+  DateTime timestamp;
+  List<Warehouse> warehouse;
+  List<GoodsReceipt> goodReceipt;
+  List<Item> listAllItem;
+  List<Item> item;
+  GetImportItemByWarehouseSuccessState(this.timestamp,
+  this.listAllItem, 
+  this.item,
+  this.warehouse, 
+  this.goodReceipt
+  );
+  @override
+  List<Object> get props => [timestamp];
+}
+
+class GetImportItemByWarehouseLoadingState extends HistoryState {
+  DateTime timestamp;
+  GetImportItemByWarehouseLoadingState(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
+
+class GetImportItemByWarehouseFailState extends HistoryState {
+  DateTime timestamp;
+  ErrorPackage status;
+  GetImportItemByWarehouseFailState(this.timestamp, this.status);
+  @override
+  List<Object> get props => [timestamp];
+}
+
+// lọc danh sách item xuat kho theo kho hàng
+class GetExportItemByWarehouseSuccessState extends HistoryState {
   DateTime timestamp;
   List<Warehouse> warehouse;
   List<Department> department;
+  List<Item> listAllItem;
   List<Item> item;
-  GetItemByWarehouseSuccessState(this.timestamp, this.item, this.warehouse, this.department);
+  GetExportItemByWarehouseSuccessState(this.timestamp,
+  this.listAllItem, 
+  this.item,
+  this.warehouse, 
+  this.department
+  );
   @override
   List<Object> get props => [timestamp];
 }
 
-class GetItemByWarehouseLoadingState extends HistoryState {
+class GetExportItemByWarehouseLoadingState extends HistoryState {
   DateTime timestamp;
-  GetItemByWarehouseLoadingState(this.timestamp);
+  GetExportItemByWarehouseLoadingState(this.timestamp);
   @override
   List<Object> get props => [timestamp];
 }
 
-class GetItemByWarehouseFailState extends HistoryState {
+class GetExportItemByWarehouseFailState extends HistoryState {
   DateTime timestamp;
   ErrorPackage status;
-  GetItemByWarehouseFailState(this.timestamp, this.status);
+  GetExportItemByWarehouseFailState(this.timestamp, this.status);
   @override
   List<Object> get props => [timestamp];
 }
 
-// Truy xuất lịch sử nhập kho
+
+// lich su nhap kho 
 class AccessImportHistorySuccessState extends HistoryState {
   DateTime timestamp;
   List<GoodsReceiptLot> goodReceiptLots;
@@ -122,101 +161,8 @@ class AccessImportHistoryFailState extends HistoryState {
   @override
   List<Object> get props => [timestamp];
 }
-// lich su nhap theo so PO
-class AccessImportHistoryByPOSuccessState extends HistoryState {
-  DateTime timestamp;
-  List<GoodsReceiptLot> goodReceiptLots;
-  AccessImportHistoryByPOSuccessState(
-    this.timestamp,
-    this.goodReceiptLots,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
 
-class AccessImportHistoryByPOLoadingState extends HistoryState {
-  DateTime timestamp;
-  AccessImportHistoryByPOLoadingState(
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class AccessImportHistoryByPOFailState extends HistoryState {
-  DateTime timestamp;
-  ErrorPackage status;
-  AccessImportHistoryByPOFailState(
-    this.timestamp,
-    this.status,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-// lich su nhap kho theo nha cung cap
-class AccessImportHistoryBySupplierSuccessState extends HistoryState {
-  DateTime timestamp;
-  List<GoodsReceiptLot> goodReceiptLots;
-  AccessImportHistoryBySupplierSuccessState(
-    this.timestamp,
-    this.goodReceiptLots,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class AccessImportHistoryBySupplierLoadingState extends HistoryState {
-  DateTime timestamp;
-  AccessImportHistoryBySupplierLoadingState(
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class AccessImportHistoryBySupplierFailState extends HistoryState {
-  DateTime timestamp;
-  ErrorPackage status;
-  AccessImportHistoryBySupplierFailState(
-    this.timestamp,
-    this.status,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-// lich su nhap kho theo ma san pham
-class AccessImportHistoryByItemIdSuccessState extends HistoryState {
-  DateTime timestamp;
-  List<GoodsReceiptLot> goodReceiptLots;
-  AccessImportHistoryByItemIdSuccessState(
-    this.timestamp,
-    this.goodReceiptLots,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class AccessImportHistoryByItemIdLoadingState extends HistoryState {
-  DateTime timestamp;
-  AccessImportHistoryByItemIdLoadingState(
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-class AccessImportHistoryByItemIdFailState extends HistoryState {
-  DateTime timestamp;
-  ErrorPackage status;
-  AccessImportHistoryByItemIdFailState(
-    this.timestamp,
-    this.status,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
-
-// Truy xuất lịch sử xuất kho
+// lich su xuat kho
 class AccessExportHistorySuccessState extends HistoryState {
   DateTime timestamp;
   List<GoodsIssueLot> goodsIssueLot;
@@ -248,35 +194,67 @@ class AccessExportHistoryFailState extends HistoryState {
   List<Object> get props => [timestamp];
 }
 
-// test giao diện
-// Truy xuất lịch sử xuất kho
-class TestHistorySuccessState extends HistoryState {
-  DateTime timestamp;
-  List<GoodsReceiptLot> goodReceiptLots;
-  TestHistorySuccessState(
-    this.timestamp,
-    this.goodReceiptLots,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
+// test giao diện lịch sử nhập kho
+// class TestHistorySuccessState extends HistoryState {
+//   DateTime timestamp;
+//   List<GoodsReceiptLot> goodReceiptLots;
+//   TestHistorySuccessState(
+//     this.timestamp,
+//     this.goodReceiptLots,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
 
-class TestHistoryLoadingState extends HistoryState {
-  DateTime timestamp;
-  TestHistoryLoadingState(
-    this.timestamp,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
+// class TestHistoryLoadingState extends HistoryState {
+//   DateTime timestamp;
+//   TestHistoryLoadingState(
+//     this.timestamp,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
 
-class TestHistoryFailState extends HistoryState {
-  DateTime timestamp;
-  ErrorPackage status;
-  TestHistoryFailState(
-    this.timestamp,
-    this.status,
-  );
-  @override
-  List<Object> get props => [timestamp];
-}
+// class TestHistoryFailState extends HistoryState {
+//   DateTime timestamp;
+//   ErrorPackage status;
+//   TestHistoryFailState(
+//     this.timestamp,
+//     this.status,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
+
+// Test giao diện kịch sử xuất kho
+// class TestExportHistorySuccessState extends HistoryState {
+//   DateTime timestamp;
+//   List<GoodsReceiptLot> goodIssueLots;
+//   TestExportHistorySuccessState(
+//     this.timestamp,
+//     this.goodIssueLots,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
+
+// class TestExportHistoryLoadingState extends HistoryState {
+//   DateTime timestamp;
+//   TestExportHistoryLoadingState(
+//     this.timestamp,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
+
+// class TestExportHistoryFailState extends HistoryState {
+//   DateTime timestamp;
+//   ErrorPackage status;
+//   TestExportHistoryFailState(
+//     this.timestamp,
+//     this.status,
+//   );
+//   @override
+//   List<Object> get props => [timestamp];
+// }
+

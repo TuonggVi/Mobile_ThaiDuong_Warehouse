@@ -40,7 +40,7 @@ class _ListImportHistoryScreenState extends State<ListImportHistoryScreen> {
           BlocConsumer<HistoryBloc, HistoryState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is TestHistorySuccessState) {
+                if (state is AccessImportHistorySuccessState) {
                   return Column(
                     children: [
                       Padding(
@@ -88,9 +88,9 @@ class _ListImportHistoryScreenState extends State<ListImportHistoryScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                  "Sản phẩm : ${state.goodReceiptLots[index].goodsReceiptLotId.toString()}  \nSố lượng : ${state.goodReceiptLots[index].quantity.toString()} \nVị trí : ${state.goodReceiptLots[index].location.toString()}"),
+                                                  "Tên sản phẩm : ${state.goodReceiptLots[index].goodsReceiptLotId.toString()}  \nSố lượng nhập: ${state.goodReceiptLots[index].quantity.toString()} \nGhi chú : ${state.goodReceiptLots[index].location.toString()}"),
                                               Text(
-                                                  "Số PO : ${state.goodReceiptLots[index].purchaseOrderNumber.toString()} \nĐịnh mức : ${state.goodReceiptLots[index].sublotSize.toString()}"),
+                                                  "Bộ phận : ${state.goodReceiptLots[index].purchaseOrderNumber.toString()} \nKho hàng : ${state.goodReceiptLots[index].sublotSize.toString()}"),
                                             ],
                                           ),
                                           isThreeLine: true,
@@ -99,13 +99,13 @@ class _ListImportHistoryScreenState extends State<ListImportHistoryScreen> {
                               })),
                       CustomizedButton(
                         onPressed: () {
-                          BlocProvider.of<HistoryBloc>(context)
-                              .add(GetAllInfoImportEvent(
-                            DateTime.now(),
-                          ));
+                          // BlocProvider.of<HistoryBloc>(context)
+                          //     .add(GetAllInfoImportEvent(
+                          //   DateTime.now(),
+                          // ));
                           Navigator.pushNamed(
                             context,
-                            '/import_history_screen',
+                            '/history_function_screen',
                           );
                         },
                         text: "Trở lại",

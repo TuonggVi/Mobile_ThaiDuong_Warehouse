@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/item_lot.dart';
 
 import '../../../domain/entities/item.dart';
+import '../../../domain/entities/location.dart';
 
 abstract class ShelveState extends Equatable {}
 
@@ -35,9 +36,11 @@ class GetAllItemIdFailState extends ShelveState {
 // Tìm kệ theo mã và tên sp
 class GetLotByItemIdSuccessState extends ShelveState {
   DateTime timestamp;
+  String itemId;
   List<ItemLot> itemLot;
   List<Item> item;
-  GetLotByItemIdSuccessState(this.timestamp, this.itemLot, this.item);
+  List<Item> listItem;
+  GetLotByItemIdSuccessState(this.timestamp, this.itemLot, this.item, this.itemId, this.listItem);
   @override
   List<Object> get props => [timestamp];
 }
@@ -60,8 +63,8 @@ class GetLotByItemIdFailState extends ShelveState {
 // List vị trí
 class GetAllLocationSuccessState extends ShelveState {
   DateTime timestamp;
-  List<String> location;
-  GetAllLocationSuccessState(this.timestamp, this.location);
+  List<Warehouse> warehouse;
+  GetAllLocationSuccessState(this.timestamp, this.warehouse);
   @override
   List<Object> get props => [timestamp];
 }
@@ -85,8 +88,15 @@ class GetAllLocationFailState extends ShelveState {
 class GetLotByLocationSuccessState extends ShelveState {
   final DateTime timestamp;
   List<ItemLot> itemLot;
-  List<String> listLocation;
-  GetLotByLocationSuccessState(this.timestamp, this.itemLot, this.listLocation);
+  List<Warehouse> listLocation;
+  List<Warehouse> warehouse;
+  String locations;
+  GetLotByLocationSuccessState(
+    this.timestamp, 
+    this.itemLot, 
+    this.listLocation, 
+    this.warehouse, 
+    this.locations);
   @override
   List<Object> get props => [timestamp, itemLot];
 }

@@ -1,10 +1,11 @@
-// ignore_for_file: unused_local_variable, deprecated_member_use, avoid_print
+// ignore_for_file: unused_local_variable, deprecated_member_use, avoid_print, unnecessary_type_check, prefer_const_constructors
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_warehouse_thaiduong/domain/entities/department.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/goods_receipt.dart';
 import 'package:mobile_warehouse_thaiduong/function.dart';
 import '../../../constant.dart';
 import '../../../domain/entities/item.dart';
@@ -26,8 +27,8 @@ class _ImportHistoryScreenState extends State<ImportHistoryScreen> {
   List<Item> itemsDropdownData = [];
   Item? selectedItem;
   String warehouse = '';
-  List<Department> departmentsDropdownData = [];
-  Department? selectedDepartment;
+  List<GoodsReceipt> goodReceiptDropdownData = [];
+  GoodsReceipt? selectedGoodReceipt;
   List<Warehouse> warehouseDropdownData = [];
   Warehouse? selectedWarehouse;
 
@@ -40,7 +41,6 @@ class _ImportHistoryScreenState extends State<ImportHistoryScreen> {
         .parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
     DateTime endDate = DateFormat('yyyy-MM-dd')
         .parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.mainColor,
@@ -55,87 +55,484 @@ class _ImportHistoryScreenState extends State<ImportHistoryScreen> {
             style: TextStyle(fontSize: 22 * SizeConfig.ratioFont),
           ),
         ),
-        body: Column(children: [
-          Container(
-              padding: const EdgeInsets.all(8),
-              child: Column(children: [
-                BlocConsumer<HistoryBloc, HistoryState>(
+        body: SingleChildScrollView(
+          child: ExpansionPanelList.radio(
+            children: [
+              ExpansionPanelRadio(
+                value: 1,
+                headerBuilder: ((context, isExpanded) {
+                  return SizedBox(
+                    width: 370 * SizeConfig.ratioHeight,
+                    height: 60 * SizeConfig.ratioHeight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: const [
+                        Icon(
+                          Icons.add_shopping_cart_outlined,
+                          color: Colors.black,
+                          size: 36.0,
+                        ),
+                        Text(
+                          'Truy xuất theo sản phẩm   ',
+                          style: TextStyle(
+                            //fontFamily: 'MyFont',
+                            fontSize: 18,
+                            //fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                body: Column(
+                  children: [
+                    BlocConsumer<HistoryBloc, HistoryState>(
+                        listener: (context, state) {
+                      if (state is GetAllInfoImportSuccessState) {
+                        warehouseDropdownData = state.warehouse;
+                        itemsDropdownData = state.item;
+                      }
+                      if (state is GetImportItemByWarehouseSuccessState) {
+                        itemsDropdownData = state.item;
+                      }
+                    }, builder: (context, state) {
+                      if (state is GetAllInfoImportSuccessState) {
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                                  child: SizedBox(
+                                    width: 170 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: DropdownSearch<dynamic>(
+                                      mode: Mode.MENU,
+                                      items: state.warehouse
+                                          .map((e) => e.warehouseId)
+                                          .toList(),
+                                      // state is GetAllInfoImportSuccessState
+                                      //     ? state.warehouse
+                                      //         .map((e) => e.warehouseId)
+                                      //         .toList()
+                                      //     : state is GetItemByWarehouseSuccessState
+                                      //         ? state.warehouse
+                                      //             .map((e) => e.warehouseId)
+                                      //             .toList()
+                                      //         : [],
+                                      showSearchBox: true,
+                                      label: "Kho hàng",
+                                      onChanged: (value) {
+                                        selectedItem = null;
+                                        print(value);
+                                        setState(() {
+                                          selectedWarehouse = state.warehouse
+                                              .firstWhere((element) =>
+                                                  element.warehouseId == value);
+                                          BlocProvider.of<HistoryBloc>(context)
+                                              .add(GetImportItemByWarehouseEvent(
+                                                  DateTime.now(),
+                                                  selectedWarehouse!
+                                                      .warehouseId,
+                                                  state.item,
+                                                  state.item,
+                                                  state.warehouse,
+                                                  state.goodReceipt));
+                                        });
+                                      },
+                                      selectedItem: selectedWarehouse == null
+                                          ? ''
+                                          : selectedWarehouse!.warehouseName,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                  child: SizedBox(
+                                    width: 170 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: DropdownSearch<String>(
+                                      mode: Mode.MENU,
+                                      items: state.goodReceipt
+                                          .map((e) => e.supply)
+                                          .toList(),
+                                      showSearchBox: true,
+                                      label: "Nhà cung cấp",
+                                      onChanged: (value) {
+                                        state is GetAllInfoImportSuccessState
+                                            ? setState(() {
+                                                selectedGoodReceipt = state
+                                                    .goodReceipt
+                                                    .firstWhere((element) =>
+                                                        element.supply == value);
+                                              })
+                                            : {};
+                                      },
+                                      selectedItem: selectedGoodReceipt == null
+                                          ? ''
+                                          : selectedGoodReceipt!.supply,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 350 * SizeConfig.ratioWidth,
+                              height: 60 * SizeConfig.ratioHeight,
+                              child: DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                items: state.item
+                                    .map((e) => e.itemId.toString())
+                                    .toList(),
+                                showSearchBox: true,
+                                label: "Mã sản phẩm",
+                                onChanged: (value) {
+                                  print(value);
+                                  print(value);
+                                  setState(() {
+                                    selectedItem = state.item.firstWhere(
+                                        (element) => element.itemId == value);
+                                  });
+                                  // state is GetAllInfoImportSuccessState
+                                  //     ? setState(() {
+                                  //         selectedItem = state.item.firstWhere(
+                                  //             (element) =>
+                                  //                 element.itemId == value);
+                                  //       })
+                                  //     : state is GetItemByWarehouseSuccessState
+                                  //         ? setState(() {
+                                  //             selectedItem = state.item
+                                  //                 .firstWhere((element) =>
+                                  //                     element.itemId == value);
+                                  //           })
+                                  //         : {};
+                                },
+                                selectedItem: selectedItem == null
+                                    ? ''
+                                    : selectedItem!.itemId,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 350 * SizeConfig.ratioWidth,
+                                height: 60 * SizeConfig.ratioHeight,
+                                child: DropdownSearch<String>(
+                                  mode: Mode.MENU,
+                                  items: state.item
+                                      .map((e) => e.itemName.toString())
+                                      .toList(),
+                                  showSearchBox: true,
+                                  label: "Tên sản phẩm",
+                                  // hint: "country in menu mode",
+                                  onChanged: (value) {
+                                    print(value);
+                                    setState(() {
+                                      selectedItem = state.item.firstWhere(
+                                          (element) =>
+                                              element.itemName == value);
+                                    });
+                                  },
+                                  selectedItem: selectedItem == null
+                                      ? ''
+                                      : selectedItem!.itemName,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 5 * SizeConfig.ratioHeight),
+                                    width: 160 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: CustomizeDatePicker(
+                                      name: "Từ ngày",
+                                      fontColor: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      initDateTime: date,
+                                      okBtnClickedFunction: (pickedTime) {
+                                        date = pickedTime;
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 5 * SizeConfig.ratioHeight),
+                                    width: 160 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: CustomizeDatePicker(
+                                      name: "Đến ngày",
+                                      fontColor: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      initDateTime: date,
+                                      okBtnClickedFunction: (pickedTime) {
+                                        date = pickedTime;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CustomizedButton(
+                                text: "Truy xuất",
+                                onPressed: () {
+                                  BlocProvider.of<HistoryBloc>(context)
+                                      .add(AccessImportHistoryByItemIdEvent(
+                                    DateTime.now(),
+                                 startDate,
+                                 endDate,
+                                 selectedItem!.itemId
+                                  ));
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/list_import_history_screen',
+                                  );
+                                }),
+                          ],
+                        );
+                      }
+                      if (state is GetImportItemByWarehouseSuccessState) {
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                                  child: SizedBox(
+                                    width: 170 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: DropdownSearch<dynamic>(
+                                      mode: Mode.MENU,
+                                      items: state.warehouse
+                                          .map((e) => e.warehouseId)
+                                          .toList(),
+                                      showSearchBox: true,
+                                      label: "Kho hàng",
+                                      // hint: "country in menu mode",
+                                      onChanged: (value) {
+                                        selectedItem = null;
+                                        print(value);
+                                        setState(() {
+                                          selectedWarehouse = state.warehouse
+                                              .firstWhere((element) =>
+                                                  element.warehouseId == value);
+                                          BlocProvider.of<HistoryBloc>(context)
+                                              .add(GetImportItemByWarehouseEvent(
+                                                  DateTime.now(),
+                                                  selectedWarehouse!
+                                                      .warehouseId,
+                                                  state.listAllItem,
+                                                  state.item,
+                                                  state.warehouse,
+                                                  state.goodReceipt));
+                                        });
+                                      },
+                                      selectedItem: selectedWarehouse == null
+                                          ? ''
+                                          : selectedWarehouse!.warehouseName,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                  child: SizedBox(
+                                    width: 170 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: DropdownSearch<String>(
+                                      mode: Mode.MENU,
+                                      items: state.goodReceipt
+                                          .map((e) => e.supply)
+                                          .toList(),
+                                      showSearchBox: true,
+                                      label: "Nhà cung cấp",
+                                      onChanged: (value) {
+                                        state is GetAllInfoImportSuccessState
+                                            ?
+                                            //  print(value);
+                                            setState(() {
+                                                selectedGoodReceipt = state
+                                                    .goodReceipt
+                                                    .firstWhere((element) =>
+                                                        element.supply == value);
+                                              })
+                                            : {};
+                                      },
+                                      selectedItem: selectedGoodReceipt == null
+                                          ? ''
+                                          : selectedGoodReceipt!.supply,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 350 * SizeConfig.ratioWidth,
+                              height: 60 * SizeConfig.ratioHeight,
+                              child: DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                items: state.item
+                                    .map((e) => e.itemId.toString())
+                                    .toList(),
+                                showSearchBox: true,
+                                label: "Mã sản phẩm",
+                                // hint: "country in menu mode",
+                                onChanged: (value) {
+                                  print(value);
+                                  print(value);
+                                  setState(() {
+                                    selectedItem = state.item.firstWhere(
+                                        (element) => element.itemId == value);
+                                  });
+                                },
+                                selectedItem: selectedItem == null
+                                    ? ''
+                                    : selectedItem!.itemId,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 350 * SizeConfig.ratioWidth,
+                                height: 60 * SizeConfig.ratioHeight,
+                                child: DropdownSearch<String>(
+                                  mode: Mode.MENU,
+                                  items: state.item
+                                      .map((e) => e.itemName.toString())
+                                      .toList(),
+                                  showSearchBox: true,
+                                  label: "Tên sản phẩm",
+                                  // hint: "country in menu mode",
+                                  onChanged: (value) {
+                                    print(value);
+                                    setState(() {
+                                      selectedItem = state.item.firstWhere(
+                                          (element) =>
+                                              element.itemName == value);
+                                    });
+                                  },
+                                  selectedItem: selectedItem == null
+                                      ? ''
+                                      : selectedItem!.itemName,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 5 * SizeConfig.ratioHeight),
+                                    width: 160 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: CustomizeDatePicker(
+                                      name: "Từ ngày",
+                                      fontColor: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      initDateTime: date,
+                                      okBtnClickedFunction: (pickedTime) {
+                                        date = pickedTime;
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 5 * SizeConfig.ratioHeight),
+                                    width: 160 * SizeConfig.ratioWidth,
+                                    height: 60 * SizeConfig.ratioHeight,
+                                    child: CustomizeDatePicker(
+                                      name: "Đến ngày",
+                                      fontColor: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      initDateTime: date,
+                                      okBtnClickedFunction: (pickedTime) {
+                                        date = pickedTime;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CustomizedButton(
+                                text: "Truy xuất",
+                                onPressed: () {
+                                  BlocProvider.of<HistoryBloc>(context)
+                                      .add(AccessImportHistoryByItemIdEvent(
+                                    DateTime.now(),
+                                    startDate,
+                                    endDate,
+                                    selectedItem!.itemId
+                                  ));
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/list_import_history_screen',
+                                  );
+                                }),
+                          ],
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    }),
+                  ],
+                ),
+              ),
+              ExpansionPanelRadio(
+                value: 2,
+                headerBuilder: ((context, isExpanded) {
+                  return SizedBox(                  
+                    width: 370 * SizeConfig.ratioHeight,
+                    height: 60 * SizeConfig.ratioHeight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: const [
+                        Icon(
+                          Icons.add_home_outlined,
+                          color: Colors.black,
+                          size: 36.0,
+                        ),
+                        Text(
+                          'Truy xuất theo nhà cung cấp',
+                          style: TextStyle(
+                            //fontFamily: 'MyFont',
+                            fontSize: 18,
+                            //fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                body: BlocConsumer<HistoryBloc, HistoryState>(
                     listener: (context, state) {
                   if (state is GetAllInfoImportSuccessState) {
                     warehouseDropdownData = state.warehouse;
                     itemsDropdownData = state.item;
                   }
-                  if (state is GetItemByWarehouseSuccessState) {
-                    itemsDropdownData = state.item;
-                  }
                 }, builder: (context, state) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 160 * SizeConfig.ratioWidth,
-                            height: 60 * SizeConfig.ratioHeight,
-                            child: DropdownSearch<dynamic>(
-                              mode: Mode.MENU,
-                              items:
-                                  //  state.warehouse.map((e) => e.warehouseName)
-                                  //     .toList(),
-                                  state is GetAllInfoImportSuccessState
-                                      ? state.warehouse
-                                          .map((e) => e.warehouseId)
-                                          .toList()
-                                      : state is GetItemByWarehouseSuccessState
-                                          ? state.warehouse
-                                              .map((e) => e.warehouseId)
-                                              .toList()
-                                          : [],
-                              showSearchBox: true,
-                              label: "Kho hàng",
-                              // hint: "country in menu mode",
-                              onChanged: (value) {
-                                print(value);
-                                state is GetAllInfoImportSuccessState
-                                    ? setState(() {
-                                        selectedWarehouse = state.warehouse
-                                            .firstWhere((element) =>
-                                                element.warehouseId == value);
-                                        BlocProvider.of<HistoryBloc>(context)
-                                            .add(GetItemByWarehouseEvent(
-                                                DateTime.now(),
-                                                selectedWarehouse!.warehouseId,
-                                                state.item,
-                                                state.warehouse,
-                                                state.department));
-                                      })
-                                    : {};
-                                //  setState(() {
-                                //                     selectedWarehouse = warehouseDropdownData
-                                //                         .firstWhere((element) =>
-                                //                             element.warehouseName == value);
-                                //                              BlocProvider.of<HistoryBloc>(context)
-                                // .add(GetItemByWarehouseEvent(DateTime.now(), selectedWarehouse!.warehouseName, itemsDropdownData));
-                                //    });
-                              },
-                              selectedItem: selectedWarehouse == null
-                                  ? ''
-                                  : selectedWarehouse!.warehouseName,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 160 * SizeConfig.ratioWidth,
+                  if (state is GetAllInfoImportSuccessState) {
+                    return Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        child: SizedBox(
+                          width: 350 * SizeConfig.ratioWidth,
                           height: 60 * SizeConfig.ratioHeight,
                           child: DropdownSearch<String>(
                             mode: Mode.MENU,
-                            items: state is GetAllInfoImportSuccessState
-                                ? state.department.map((e) => e.name).toList()
-                                : state is GetItemByWarehouseSuccessState
-                                    ? state.department
-                                        .map((e) => e.name)
-                                        .toList()
-                                    : [],
+                            items: state.goodReceipt.map((e) => e.supply).toList(),
                             showSearchBox: true,
                             label: "Nhà cung cấp",
                             onChanged: (value) {
@@ -143,249 +540,156 @@ class _ImportHistoryScreenState extends State<ImportHistoryScreen> {
                                   ?
                                   //  print(value);
                                   setState(() {
-                                      selectedDepartment = state.department
+                                      selectedGoodReceipt = state.goodReceipt
                                           .firstWhere((element) =>
-                                              element.name == value);
+                                              element.supply == value);
                                     })
                                   : {};
                             },
-                            selectedItem: selectedDepartment == null
+                            selectedItem: selectedGoodReceipt == null
                                 ? ''
-                                : selectedDepartment!.name,
+                                : selectedGoodReceipt!.supply,
                           ),
                         ),
-                        //],
-                        //     ),
-                        //   ),
-                      ]);
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5 * SizeConfig.ratioHeight),
+                              width: 160 * SizeConfig.ratioWidth,
+                              height: 60 * SizeConfig.ratioHeight,
+                              child: CustomizeDatePicker(
+                                name: "Từ ngày",
+                                fontColor: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                initDateTime: date,
+                                okBtnClickedFunction: (pickedTime) {
+                                  date = pickedTime;
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5 * SizeConfig.ratioHeight),
+                              width: 160 * SizeConfig.ratioWidth,
+                              height: 60 * SizeConfig.ratioHeight,
+                              child: CustomizeDatePicker(
+                                name: "Đến ngày",
+                                fontColor: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                initDateTime: date,
+                                okBtnClickedFunction: (pickedTime) {
+                                  date = pickedTime;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      CustomizedButton(
+                          text: "Truy xuất",
+                          onPressed: () {
+                            BlocProvider.of<HistoryBloc>(context)
+                                .add(AccessImportHistoryBySupplierEvent(
+                              DateTime.now(),
+                             startDate,
+                             endDate,
+                             selectedGoodReceipt!.supply,
+                            ));
+                            Navigator.pushNamed(
+                              context,
+                              '/list_import_history_screen',
+                            );
+                          })
+                    ]);
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
                 }),
-                BlocConsumer<HistoryBloc, HistoryState>(
-                    listener: (context, state) {},
-                    builder: (context, state) {
-                      return Column(children: [
-                        SizedBox(
+              ),
+              ExpansionPanelRadio(
+                value: 3,
+                headerBuilder: ((context, isExpanded) {
+                  return SizedBox(
+                    width: 370 * SizeConfig.ratioHeight,
+                    height: 60 * SizeConfig.ratioHeight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children:const  [
+                        Icon(
+                          Icons.document_scanner_outlined,
+                          color: Colors.black,
+                          size: 36.0,
+                        ),
+                        Text(
+                          'Truy xuất theo PO                  ',
+                          style: TextStyle(
+                            //fontFamily: 'MyFont',
+                            fontSize: 18,
+                            //fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+                body: BlocConsumer<HistoryBloc, HistoryState>(
+                    listener: (context, state) {
+                  if (state is GetAllInfoImportSuccessState) {
+                    warehouseDropdownData = state.warehouse;
+                    itemsDropdownData = state.item;
+                  }
+                  // if (state is GetItemByWarehouseSuccessState) {
+                  //   itemsDropdownData = state.item;
+                  // }
+                }, builder: (context, state) {
+                  if (state is GetAllInfoImportSuccessState) {
+                    return Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        child: SizedBox(
                           width: 350 * SizeConfig.ratioWidth,
                           height: 60 * SizeConfig.ratioHeight,
                           child: DropdownSearch<String>(
                             mode: Mode.MENU,
-                            items: state is GetAllInfoImportSuccessState
-                                ? state.item
-                                    .map((e) => e.itemId.toString())
-                                    .toList()
-                                : state is GetItemByWarehouseSuccessState
-                                    ? state.item
-                                        .map((e) => e.itemId.toString())
-                                        .toList()
-                                    : [],
+                            items: state.goodReceipt.map((e) => e.supply).toList(),
+                     
                             showSearchBox: true,
-                            label: "Mã sản phẩm",
-                            // hint: "country in menu mode",
+                            label: "PO",
                             onChanged: (value) {
-                              print(value);
-                              print(value);
-                                state is GetAllInfoImportSuccessState
-                                    ? setState(() {
-                                        selectedItem = state.item.firstWhere(
-                                            (element) =>
-                                                element.itemId == value);
-                                      })
-                                    : state is GetItemByWarehouseSuccessState
-                                        ? setState(() {
-                                            selectedItem = state.item
-                                                .firstWhere((element) =>
-                                                    element.itemId == value);
-                                          })
-                                        : {};
-                              // //  print(value);
-                              // setState(() {
-                              //   selectedItem = state.item.firstWhere(
-                              //       (element) => element.itemId == value);
-                              // });
+                          
                             },
-                            selectedItem: selectedItem == null
+                            selectedItem: selectedGoodReceipt == null
                                 ? ''
-                                : selectedItem!.itemId,
+                                : selectedGoodReceipt!.supply,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 350 * SizeConfig.ratioWidth,
-                            height: 60 * SizeConfig.ratioHeight,
-                            child: DropdownSearch<String>(
-                              mode: Mode.MENU,
-                              items: state is GetAllInfoImportSuccessState
-                                  ? state.item
-                                      .map((e) => e.itemName.toString())
-                                      .toList()
-                                  : state is GetItemByWarehouseSuccessState
-                                      ? state.item
-                                          .map((e) => e.itemName.toString())
-                                          .toList()
-                                      : [],
-                              showSearchBox: true,
-                              label: "Tên sản phẩm",
-                              // hint: "country in menu mode",
-                              onChanged: (value) {
-                                print(value);
-                                state is GetAllInfoImportSuccessState
-                                    ? setState(() {
-                                        selectedItem = state.item.firstWhere(
-                                            (element) =>
-                                                element.itemName == value);
-                                      })
-                                    : state is GetItemByWarehouseSuccessState
-                                        ? setState(() {
-                                            selectedItem = state.item
-                                                .firstWhere((element) =>
-                                                    element.itemName == value);
-                                          })
-                                        : {};
-                              
-                              },
-                              selectedItem: selectedItem == null
-                                  ? ''
-                                  : selectedItem!.itemName,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 5 * SizeConfig.ratioHeight),
-                                width: 160 * SizeConfig.ratioWidth,
-                                height: 60 * SizeConfig.ratioHeight,
-                                child: CustomizeDatePicker(
-                                  name: "Từ ngày",
-                                  fontColor: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  initDateTime: date,
-                                  okBtnClickedFunction: (pickedTime) {
-                                    date = pickedTime;
-                                  },
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 5 * SizeConfig.ratioHeight),
-                                width: 160 * SizeConfig.ratioWidth,
-                                height: 60 * SizeConfig.ratioHeight,
-                                child: CustomizeDatePicker(
-                                  name: "Đến ngày",
-                                  fontColor: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  initDateTime: date,
-                                  okBtnClickedFunction: (pickedTime) {
-                                    date = pickedTime;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        CustomizedButton(
-                            text: "Truy xuất",
-                            onPressed: () {
-                              BlocProvider.of<HistoryBloc>(context)
-                                  .add(TestHistoryEvent(
-                                DateTime.now(),
-                                warehouse,
-                              ));
-                              Navigator.pushNamed(
-                                context,
-                                '/list_import_history_screen',
-                              );
-                            }),
-                        const Divider(
-                          indent: 30,
-                          endIndent: 30,
-                          color: Constants.mainColor,
-                          thickness: 1,
-                        ),
-                      ]);
-                    }),
-                // BlocConsumer<HistoryBloc, HistoryState>(
-                //     listener: (context, state) {},
-                //     builder: (context, state) {
-                //       if (state is TestHistorySuccessState) {
-                //         return Column(
-                //           children: [
-                //             Padding(
-                //               padding: const EdgeInsets.all(8.0),
-                //               child: Text(
-                //                 overflow: TextOverflow.ellipsis,
-                //                 "Danh sách các lô hàng",
-                //                 style: TextStyle(
-                //                   fontWeight: FontWeight.w600,
-                //                   fontSize: 20 * SizeConfig.ratioFont,
-                //                   color: Colors.black,
-                //                 ),
-                //               ),
-                //             ),
-                //             SizedBox(
-                //                 height: 500 * SizeConfig.ratioHeight,
-                //                 child: ListView.builder(
-                //                     // shrinkWrap: true,
-                //                     itemCount: state.goodReceiptLots.length,
-                //                     itemBuilder:
-                //                         (BuildContext context, int index) {
-                //                       return Padding(
-                //                         padding: const EdgeInsets.all(8.0),
-                //                         child: Column(
-                //                           children: [
-                //                             Divider(
-                //                               // indent: 30,
-                //                               // endIndent: 30,
-                //                               color: Constants.mainColor,
-                //                               thickness: 1,
-                //                             ),
-                //                             ListTile(
-                //                                 leading: const Icon(Icons.list),
-                //                                 // shape: RoundedRectangleBorder(
-                //                                 //   side: BorderSide(width: 1),
-                //                                 //   borderRadius:
-                //                                 //       BorderRadius.circular(10),
-                //                                 // ),
-                //                                 trailing: Icon(
-                //                                     Icons.arrow_drop_down_sharp,
-                //                                     size: 15 *
-                //                                         SizeConfig.ratioFont),
-                //                                 title: Text(
-                //                                     "Mã lô : ${state.goodReceiptLots[index].goodsReceiptLotId}"),
-                //                                 subtitle: Row(
-                //                                   mainAxisAlignment:
-                //                                       MainAxisAlignment
-                //                                           .spaceBetween,
-                //                                   children: [
-                //                                     Text(
-                //                                         "Sản phẩm : ${state.goodReceiptLots[index].goodsReceiptLotId.toString()}  \nSố lượng : ${state.goodReceiptLots[index].quantity.toString()} \nVị trí : ${state.goodReceiptLots[index].location.toString()}"),
-                //                                     Text(
-                //                                         "Số PO : ${state.goodReceiptLots[index].purchaseOrderNumber.toString()} \nĐịnh mức : ${state.goodReceiptLots[index].sublotSize.toString()}"),
-                //                                   ],
-                //                                 ),
-                //                                 isThreeLine: true,
-                //                                 onTap: () {}),
-                //                           ],
-                //                         ),
-                //                       );
-                //                     })),
-                //             CustomizedButton(
-                //               onPressed: () {},
-                //               text: "Trở lại",
-                //             )
-                //           ],
-                //         );
-                //       } else {
-                //         print(state);
-                //         return const Center(child: CircularProgressIndicator());
-                //       }
-                // }
-                // )
-              ]))
-        ]));
+                      ),
+                      CustomizedButton(
+                          text: "Truy xuất",
+                          onPressed: () {
+                            BlocProvider.of<HistoryBloc>(context)
+                                .add(AccessImportHistoryByPOEvent(
+                              DateTime.now(),
+                              warehouse,
+                            ));
+                            Navigator.pushNamed(
+                              context,
+                              '/list_import_history_screen',
+                            );
+                          })
+                    ]);
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
+              ),
+            ],
+          ),
+        ));
   }
 }

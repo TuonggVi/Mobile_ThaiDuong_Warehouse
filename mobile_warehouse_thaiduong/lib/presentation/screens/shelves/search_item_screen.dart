@@ -20,7 +20,9 @@ class SearchItemScreen extends StatefulWidget {
 }
 
 class _SearchItemScreenState extends State<SearchItemScreen> {
+  List<Item> itemsDropdownData = [];
   Item? selectedItem;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -40,68 +42,83 @@ class _SearchItemScreenState extends State<SearchItemScreen> {
             style: TextStyle(fontSize: 22 * SizeConfig.ratioFont),
           ),
         ),
-        body: BlocConsumer<ShelveBloc, ShelveState>(
-            listener: (context, state) {},
-            builder: (context, state) {
+         body: Column(
+          children: [
+            BlocConsumer<ShelveBloc, ShelveState>(
+                listener: (context, state) {
               if (state is GetAllItemIdSuccessState) {
-                return Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 340 * SizeConfig.ratioWidth,
+                itemsDropdownData = state.items;
+              }
+              if (state is GetLotByItemIdSuccessState) {
+                itemsDropdownData = state.item;
+              }
+            }, builder: (context, state) {
+              if (state is GetAllItemIdSuccessState) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 350 * SizeConfig.ratioWidth,
+                        height: 60 * SizeConfig.ratioHeight,
+                        child: DropdownSearch<String>(
+                          mode: Mode.MENU,
+                          items: state.items.map((e) => e.itemId).toList(),
+                          showSearchBox: true,
+                          label: "Mã sản phẩm",
+                          onChanged: (value) {
+                            print(value);
+                            selectedItem = null;
+                            setState(() {
+                              selectedItem = state.items.firstWhere(
+                                  (element) => element.itemId == value);
+                            });
+                          },
+                          selectedItem:
+                              selectedItem == null ? '' : selectedItem!.itemId,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 350 * SizeConfig.ratioWidth,
                       height: 60 * SizeConfig.ratioHeight,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
-                        items: state.items.map((e) => e.itemId.toString()).toList(),
+                        items: state.items
+                            .map((e) => e.itemName.toString())
+                            .toList(),
                         showSearchBox: true,
-                        label: "Mã sản phẩm",
-                        // hint: "country in menu mode",
+                        label: "Tên sản phẩm",
                         onChanged: (value) {
-                          //  print(value);
+                          print(value);
                           setState(() {
                             selectedItem = state.items.firstWhere(
-                                (element) => element.itemId == value);
+                                (element) => element.itemName == value);
                           });
                         },
-                        selectedItem:
-                            selectedItem == null ? '' : selectedItem!.itemId,
+                        selectedItem: selectedItem == null
+                            ? ''
+                            : selectedItem!.itemName,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 340 * SizeConfig.ratioWidth,
-                    height: 60 * SizeConfig.ratioHeight,
-                    child: DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      items: state.items.map((e) => e.itemName.toString()).toList(),
-                      showSearchBox: true,
-                      label: "Tên sản phẩm",
-                      // hint: "country in menu mode",
-                      onChanged: (value) {
-                        //  print(value);
-                        setState(() {
-                          selectedItem = state.items.firstWhere(
-                              (element) => element.itemName == value);
-                        });
-                      },
-                      selectedItem:
-                          selectedItem == null ? '' : selectedItem!.itemName,
+                    CustomizedButton(
+                        text: "Truy xuất",
+                        onPressed: () {
+                          BlocProvider.of<ShelveBloc>(context).add(
+                              GetLotByItemIdEvent(DateTime.now(),
+                                  selectedItem!.itemId, state.items
+
+                                  //state.warehouse
+                                  ));
+                        }),
+                    const Divider(
+                      indent: 30,
+                      endIndent: 30,
+                      color: Constants.mainColor,
+                      thickness: 1,
                     ),
-                  ),
-                  CustomizedButton(
-                      text: "Truy xuất",
-                      onPressed: () {
-                        BlocProvider.of<ShelveBloc>(context).add(
-                            GetLotByItemIdEvent(DateTime.now(),
-                                selectedItem!.itemId.toString(), state.items));
-                      }),
-                  const Divider(
-                    indent: 30,
-                    endIndent: 30,
-                    color: Constants.mainColor,
-                    thickness: 1,
-                  ),
-                ]);
+                  ],
+                );
               }
               if (state is GetLotByItemIdSuccessState) {
                 return Column(
@@ -109,16 +126,18 @@ class _SearchItemScreenState extends State<SearchItemScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        width: 340 * SizeConfig.ratioWidth,
+                        width: 350 * SizeConfig.ratioWidth,
                         height: 60 * SizeConfig.ratioHeight,
                         child: DropdownSearch<String>(
                           mode: Mode.MENU,
-                          items: state.item.map((e) => e.itemId.toString()).toList(),
+                          items:
+                              state.item.map((e) => e.itemId.toString()).toList(),
                           showSearchBox: true,
                           label: "Mã sản phẩm",
                           // hint: "country in menu mode",
                           onChanged: (value) {
-                            //  print(value);
+                            print(value);
+                            print(value);
                             setState(() {
                               selectedItem = state.item.firstWhere(
                                   (element) => element.itemId == value);
@@ -130,23 +149,26 @@ class _SearchItemScreenState extends State<SearchItemScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: 340 * SizeConfig.ratioWidth,
+                      width: 350 * SizeConfig.ratioWidth,
                       height: 60 * SizeConfig.ratioHeight,
                       child: DropdownSearch<String>(
                         mode: Mode.MENU,
-                        items: state.item.map((e) => e.itemName.toString()).toList(),
+                        items: state.item
+                            .map((e) => e.itemName.toString())
+                            .toList(),
                         showSearchBox: true,
                         label: "Tên sản phẩm",
                         // hint: "country in menu mode",
                         onChanged: (value) {
-                          //  print(value);
+                          print(value);
                           setState(() {
                             selectedItem = state.item.firstWhere(
                                 (element) => element.itemName == value);
                           });
                         },
-                        selectedItem:
-                            selectedItem == null ? '' : selectedItem!.itemName,
+                        selectedItem: selectedItem == null
+                            ? ''
+                            : selectedItem!.itemName,
                       ),
                     ),
                     CustomizedButton(
@@ -154,8 +176,7 @@ class _SearchItemScreenState extends State<SearchItemScreen> {
                         onPressed: () {
                           BlocProvider.of<ShelveBloc>(context).add(
                               GetLotByItemIdEvent(DateTime.now(),
-                                  selectedItem!.itemId.toString(), state.item));
-                          // selectedItem!.itemId));
+                                  selectedItem!.itemId, state.item));
                         }),
                     const Divider(
                       indent: 30,
@@ -163,63 +184,64 @@ class _SearchItemScreenState extends State<SearchItemScreen> {
                       color: Constants.mainColor,
                       thickness: 1,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        "Danh sách các lô hàng",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20 * SizeConfig.ratioFont,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                        height: 380 * SizeConfig.ratioHeight,
-                        child: ListView.builder(
-                            itemCount: state.itemLot.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                   child: Container(
-                                    height: 110.0 * SizeConfig.ratioHeight,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                child: ListTile(
-                                    leading: const Icon(Icons.list),
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(width: 1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    trailing: Icon(Icons.arrow_drop_down_sharp,
-                                        size: 15 * SizeConfig.ratioFont),
-                                    title: Text(
-                                        "Mã lô : ${state.itemLot[index].lotId}"),
-                                    subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                            "Sản phẩm : ${state.itemLot[index].item.itemId.toString()}  \nSố lượng : ${state.itemLot[index].quantity.toString()} \nVị trí : ${state.itemLot[index].location.toString()}"),
-                                        Text(
-                                            "Số PO : ${state.itemLot[index].purchaseOrderNumber.toString()} \nĐịnh mức : ${state.itemLot[index].sublotSize.toString()}"),
-                                      ],
-                                    ),
-                                    isThreeLine: true,
-                                    onTap: () {}),
-                              ));
-                            })),
                   ],
                 );
               } else {
-                print(state);
-                return const Center(child: CircularProgressIndicator());
+                return Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 350 * SizeConfig.ratioWidth,
+                      height: 60 * SizeConfig.ratioHeight,
+                      child: DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        // items: state.item.map((e) => e.itemId).toList(),
+                        // showSearchBox: true,
+                        label: "Mã sản phẩm",
+                        onChanged: (value) {
+                          // print(value);
+                          // setState(() {
+                          //   selectedItem = state.item.firstWhere(
+                          //       (element) => element.itemId == value);
+                          // });
+                        },
+                        selectedItem:
+                            selectedItem == null ? '' : selectedItem!.itemId,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 350 * SizeConfig.ratioWidth,
+                    height: 60 * SizeConfig.ratioHeight,
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      // items: state.item
+                      //     .map((e) => e.itemName.toString())
+                      //     .toList(),
+                      showSearchBox: true,
+                      label: "Tên sản phẩm",
+                      onChanged: (value) {
+                        print(value);
+                        // setState(() {
+                        //   selectedItem = state.item.firstWhere(
+                        //       (element) => element.itemName == value);
+                        // });
+                      },
+                      selectedItem:
+                          selectedItem == null ? '' : selectedItem!.itemName,
+                    ),
+                  ),
+                  CustomizedButton(text: "Truy xuất", onPressed: () {}),
+                  const Divider(
+                    indent: 30,
+                    endIndent: 30,
+                    color: Constants.mainColor,
+                    thickness: 1,
+                  ),
+                ]);
               }
-            }));
+            }),
+          ],
+        ));
   }
 }

@@ -100,9 +100,8 @@ class GoodsIssueRepoImpl implements GoodsIssueRepository {
     DateTime endDate,
     String itemId,
     String department,
-    //String receiver,
-    //String purchaseOrderNumber
   ) {
     throw UnimplementedError();
   }
+
 }

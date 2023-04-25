@@ -27,13 +27,16 @@ class UpdateIsolationItemScreen extends StatelessWidget {
         ),
       ),
       body: Column(children: [
-        Text(
-          overflow: TextOverflow.ellipsis,
-          "Danh sách hàng đang cách ly",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20 * SizeConfig.ratioFont,
-            color: Colors.black,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            overflow: TextOverflow.ellipsis,
+            "Danh sách hàng đang cách ly",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 20 * SizeConfig.ratioFont,
+              color: Colors.black,
+            ),
           ),
         ),
         BlocConsumer<IsolationBloc, IsolationState>(

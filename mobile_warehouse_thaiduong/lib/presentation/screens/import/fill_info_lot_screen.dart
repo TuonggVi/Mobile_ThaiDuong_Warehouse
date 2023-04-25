@@ -31,8 +31,8 @@ class FillInfoLotReceiptScreen extends StatefulWidget {
 class _FillInfoLotReceiptScreenState extends State<FillInfoLotReceiptScreen> {
   Item? selectedItem;
   String unit = '';
-  GoodsReceiptLot goodsReceiptLot =
-      GoodsReceiptLot('', '', null, null, null, null, '', null, null);
+ // GoodsReceiptLot goodsReceiptLot =
+    //  GoodsReceiptLot('', '', null, null, null, null, '', null, null);
   // String lotId = '', poNumber = '';
   // double sublotSize = 0, quantity = 0;
   // DateTime productionDate = DateFormat('yyyy-MM-dd').parse('');

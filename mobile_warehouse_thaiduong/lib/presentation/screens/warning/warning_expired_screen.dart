@@ -32,6 +32,8 @@ class _WarningExpiredScreenState extends State<WarningExpiredScreen> {
           leading: IconButton(
             icon: const Icon(Icons.west_outlined),
             onPressed: () {
+              BlocProvider.of<WarningBloc>(context).add(
+              ExpirationWarningEvent(DateTime.now(), expirationDate));
               Navigator.pushNamed(context, '/warning_function_screen');
             },
           ),
@@ -101,7 +103,7 @@ class _WarningExpiredScreenState extends State<WarningExpiredScreen> {
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                      child: Container(
-                                    height: 110.0 * SizeConfig.ratioHeight,
+                                    height: 100.0 * SizeConfig.ratioHeight,
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         width: 1,
@@ -110,11 +112,6 @@ class _WarningExpiredScreenState extends State<WarningExpiredScreen> {
                                     ),
                                   child: ListTile(
                                       leading: const Icon(Icons.list),
-
-                                      // shape: RoundedRectangleBorder(
-                                      //   side: const BorderSide(width: 1),
-                                      //   borderRadius: BorderRadius.circular(10),
-                                      // ),
                                       trailing: Icon(
                                           Icons.arrow_drop_down_sharp,
                                           size: 15 * SizeConfig.ratioFont),

@@ -18,7 +18,7 @@ class GetLotByItemIdEvent extends IsolationEvent {
  String itemId;
  List<Item> listItem;
   GetLotByItemIdEvent(this.timestamp, this.itemId, 
-  this.listItem
+ this.listItem
   );
   @override
   List<Object> get props => [timestamp];

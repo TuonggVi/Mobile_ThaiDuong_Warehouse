@@ -11,7 +11,8 @@ abstract class IsolationState extends Equatable {}
 class GetAllItemSuccessState extends IsolationState {
   DateTime timestamp;
   List<Item> item;
-  GetAllItemSuccessState(this.timestamp, this.item);
+  GetAllItemSuccessState(this.timestamp, this.item,
+  );
   @override
   List<Object> get props => [timestamp];
 }
@@ -35,9 +36,10 @@ class GetAllItemFailState extends IsolationState {
 class GetLotByItemIdSuccessState extends IsolationState {
   DateTime timestamp;
   String itemId;
+  List<Item> item;
   List <ItemLot> itemLots;
   List<Item> listItem;
-  GetLotByItemIdSuccessState(this.timestamp, this.itemId, this.itemLots,
+  GetLotByItemIdSuccessState(this.timestamp, this.itemId, this.item, this.itemLots,
   this.listItem
    );
   @override

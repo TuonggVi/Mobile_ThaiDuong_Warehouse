@@ -1,5 +1,6 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse_thaiduong/datasource/models/location_model.dart';
 import 'package:mobile_warehouse_thaiduong/domain/usecases/item_usecase.dart';
 import 'package:mobile_warehouse_thaiduong/domain/usecases/item_lot_usecase.dart';
 import 'package:mobile_warehouse_thaiduong/domain/usecases/location_usecase.dart';
@@ -28,7 +29,7 @@ class ShelveBloc extends Bloc<ShelveEvent, ShelveState> {
       try {
         final itemLot = await itemLotUsecase.getItemLotsByItemId(event.itemId);
         itemLot.isNotEmpty
-            ? emit(GetLotByItemIdSuccessState(DateTime.now(), itemLot, event.item))
+            ? emit(GetLotByItemIdSuccessState(DateTime.now(), itemLot, event.listItem, event.itemId, event.listItem))
             : emit(GetLotByItemIdFailState(
                 DateTime.now(), ''));
       } catch (e) {
@@ -40,8 +41,8 @@ class ShelveBloc extends Bloc<ShelveEvent, ShelveState> {
     on<GetAllLocationEvent>((event, emit) async {
       emit(GetAllLocationLoadingState(DateTime.now()));
       try {
-        final locationIds = await locationUsecase.getAllLocationId();
-        emit(GetAllLocationSuccessState(DateTime.now(), locationIds));
+          final warehouse = await locationUsecase.getAllWarehouse();
+        emit(GetAllLocationSuccessState(DateTime.now(), warehouse));
       } catch (e) {
         emit(GetAllLocationFailState(DateTime.now()));
       }
@@ -51,9 +52,9 @@ class ShelveBloc extends Bloc<ShelveEvent, ShelveState> {
       emit(GetLotByLocationLoadingState(DateTime.now()));
       try {
         final itemLot =
-            await itemLotUsecase.getItemLotsByLocation(event.location);
+            await itemLotUsecase.getItemLotsByLocation(event.locations);
         itemLot.isNotEmpty
-            ? emit(GetLotByLocationSuccessState(DateTime.now(), itemLot, event.listLocation))
+            ? emit(GetLotByLocationSuccessState(DateTime.now(), itemLot, event.listLocation, event.warehouse, event.locations))
             : emit(GetLotByLocationFailState(
                 DateTime.now(), 'Không có lô ở vị trí này'));
       } catch (e) {

@@ -1,5 +1,8 @@
 
+// ignore_for_file: unused_import
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse_thaiduong/domain/entities/item.dart';
 import 'package:mobile_warehouse_thaiduong/domain/usecases/item_usecase.dart';
 import 'package:mobile_warehouse_thaiduong/domain/usecases/item_lot_usecase.dart';
 import 'package:mobile_warehouse_thaiduong/presentation/bloc/events/isolation_events.dart';
@@ -14,7 +17,9 @@ class IsolationBloc extends Bloc<IsolationEvent, IsolationState> {
       emit(GetAllItemLoadingState(DateTime.now()));
       try {
         final items = await itemUsecase.getAllItem();
-        emit(GetAllItemSuccessState(DateTime.now(), items));
+        emit(GetAllItemSuccessState(DateTime.now(), items
+        //items
+        ));
       } catch (e) {
         //emit(Load(DateTime.now()));
       }
@@ -25,8 +30,8 @@ class IsolationBloc extends Bloc<IsolationEvent, IsolationState> {
       try {
         final itemLot = await itemLotUsecase.getItemLotsByItemId(event.itemId);
         itemLot.isNotEmpty
-            ? emit(GetLotByItemIdSuccessState(DateTime.now(), event.itemId, itemLot,
-             event.listItem
+            ? emit(GetLotByItemIdSuccessState(DateTime.now(), event.itemId, event.listItem, itemLot, event.listItem
+       
              ))
             : emit(GetLotByItemIdFailState(
                 DateTime.now(),
@@ -45,4 +50,6 @@ class IsolationBloc extends Bloc<IsolationEvent, IsolationState> {
       
     });
   }
+
+
 }

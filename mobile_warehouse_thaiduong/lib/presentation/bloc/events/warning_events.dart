@@ -20,18 +20,17 @@ class GetWarehouseEvent extends WarningEvent {
   DateTime timestamp;
   GetWarehouseEvent(this.timestamp);
   @override
-
   List<Object> get props => [timestamp];
 }
 
 // hiển thị danh sách sản phẩm dưới số lượng tồn kho tối thiểu
 class MinimumStockWarningEvent extends WarningEvent {
   DateTime timestamp;
-  List <Warehouse> warehouse;
   String warehouseId;
   List<Warehouse> listWarehouse;
-  MinimumStockWarningEvent(this.timestamp, this.warehouseId, this.warehouse,
-  this.listWarehouse
+   
+  MinimumStockWarningEvent(this.timestamp, this.warehouseId,
+  this.listWarehouse, 
   );
   @override
   List<Object> get props => [timestamp];

@@ -50,7 +50,10 @@ class GoodsReceiptRepoImpl implements GoodsReceiptRepository {
         expirationDate);
     return status;
   }
-
+  @override
+  Future<List<GoodsReceipt>> getAllGoodReceipt() {
+    throw UnimplementedError();
+  }
   // truy xuat lich su nhap kho
   @override
   Future<List<GoodsReceiptLot>> getGoodsReceiptsHistoryByPO(
@@ -86,8 +89,7 @@ class GoodsReceiptRepoImpl implements GoodsReceiptRepository {
       String purchaseOrderNumber) {
     throw UnimplementedError();
   }
-
-  // thử giao diện
+ // thử giao diện
   @override
   Future<List<GoodsReceiptLot>> getGoodsReceiptsHistoryTest(String warehouse) {
     final goodsReceiptLot =

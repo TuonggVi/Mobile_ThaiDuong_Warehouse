@@ -43,12 +43,14 @@ class GoodsReceiptUsecase {
     final goodsReceipts = goodsReceiptRepository.getUnCompletedGoodsReceipts();
     return goodsReceipts;
   }
+   Future<List<GoodsReceipt>> getAllGoodReceipt() async {
+    final goodsReceipt = goodsReceiptRepository.getAllGoodReceipt();
+    return goodsReceipt;
+  }
   // truy xuat lich su nhap kho
   Future<List<GoodsReceiptLot>> getGoodsReceiptsHistoryByPO(
- 
       String purchaseOrderNumber) async {
     final goodsReceipts = goodsReceiptRepository.getGoodsReceiptsHistoryByPO(
- 
         purchaseOrderNumber);
     return goodsReceipts;
   }

@@ -32,13 +32,13 @@ abstract class GoodsIssueRepository {
       DateTime endDate,
       String itemId);
       
-  Future<List<GoodsIssueLot>> getGoodsIssueHistory(
-      String warehouse,
-      DateTime startDate,
-      DateTime endDate,
-      String itemId,
-      String department,
+  // Future<List<GoodsIssueLot>> getGoodsIssueHistory(
+  //     String warehouse,
+  //     DateTime startDate,
+  //     DateTime endDate,
+  //     String itemId,
+  //     String department,
       //String receiver,
       //String purchaseOrderNumber
-      );
+   //   );
 }

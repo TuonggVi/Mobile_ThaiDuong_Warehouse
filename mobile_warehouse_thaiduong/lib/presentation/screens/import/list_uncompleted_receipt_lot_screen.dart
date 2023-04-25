@@ -121,8 +121,8 @@ class _ListUncompletedLotReceiptScreenState
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                        "Sản phẩm : ${state.goodsReceipt.lots[index].itemId.toString()}  \nSố lượng : ${state.goodsReceipt.lots[index].quantity.toString().toString()} \nVị trí : ${state.goodsReceipt.lots[index].location.toString()}"),
+                                    //Text(
+                                   //     "Sản phẩm : ${state.goodsReceipt.lots[index].itemId.toString()}  \nSố lượng : ${state.goodsReceipt.lots[index].quantity.toString().toString()} \nVị trí : ${state.goodsReceipt.lots[index].location.toString()}"),
                                     Text(
                                         "Số PO : ${state.goodsReceipt.lots[index].purchaseOrderNumber.toString()} \nĐịnh mức : ${state.goodsReceipt.lots[index].sublotSize.toString()}"),
                                   ],

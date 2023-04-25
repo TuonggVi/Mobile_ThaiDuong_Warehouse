@@ -64,7 +64,7 @@ class GoodsIssueUseCase {
     return status;
   }
 // truy xuat lich su xuat kho
-  Future<List<GoodsIssueLot>> getGoodsReceiptsHistoryByPO(
+  Future<List<GoodsIssueLot>> getGoodsIssueHistoryByPO(
  
       String purchaseOrderNumber) async {
     final goodsReceipts = goodsIssueRepository.getGoodsIssueHistoryByPO(
@@ -95,24 +95,24 @@ class GoodsIssueUseCase {
     );
     return goodsReceipts;
   }
-    Future<List<GoodsIssueLot>> getGoodsIssueHistory(
-      String warehouse,
-      DateTime startDate,
-      DateTime endDate,
-      String itemId,
-      String department,
-     // String receiver,
-     // String purchaseOrderNumber
-    ) async {
-    final goodsReceipts = goodsIssueRepository.getGoodsIssueHistory(
-        warehouse,
-        startDate,
-        endDate,
-        itemId,
-        department
-        //receiver,
-        //purchaseOrderNumber
-        );
-    return goodsReceipts;
-  }
+  //   Future<List<GoodsIssueLot>> getGoodsIssueHistory(
+  //     String warehouse,
+  //     DateTime startDate,
+  //     DateTime endDate,
+  //     String itemId,
+  //     String department,
+  //    // String receiver,
+  //    // String purchaseOrderNumber
+  //   ) async {
+  //   final goodsReceipts = goodsIssueRepository.getGoodsIssueHistory(
+  //       warehouse,
+  //       startDate,
+  //       endDate,
+  //       itemId,
+  //       department
+  //       //receiver,
+  //       //purchaseOrderNumber
+  //       );
+  //   return goodsReceipts;
+  // }
 }
